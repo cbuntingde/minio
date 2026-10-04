@@ -1,0 +1,54 @@
+name: Diagnose GHCR access
+
+# Temporary diagnostic: dumps the GHCR token claims granted to GITHUB_TOKEN and
+# probes whether ghcr.io/cbuntingde/minio already exists (orphaned packages block
+# GITHUB_TOKEN pushes with "denied: permission_denied: write_package").
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Inspect GITHUB_TOKEN capabilities and GHCR package state
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          echo "::add-mask::$TOKEN"
+          echo "repository: $REPO"
+
+          echo "--- REST access as GITHUB_TOKEN (repo permissions granted to the token) ---"
+          curl -s -H "Authorization: Bearer $TOKEN" \
+            -o /tmp/repo.json -w 'http=%{http_code}\n' \
+            "https://api.github.com/repos/$REPO"
+          jq -c '{message, permissions, visibility, fork}' /tmp/repo.json
+
+          echo "--- GHCR token exchange for repository:cbuntingde/minio:pull,push ---"
+          curl -s -H "Authorization: Bearer $TOKEN" \
+            -o /tmp/ghcr.json -w 'http=%{http_code}\n' \
+            "https://ghcr.io/token?service=ghcr.io&scope=repository:cbuntingde/minio:pull,push"
+          jq -c '{message, errors}' /tmp/ghcr.json 2>/dev/null || true
+          jq -r '.token // empty' /tmp/ghcr.json | awk -F. '{print $2}' \
+            | tr '_-' '/+' \
+            | awk '{ l = length($0) % 4; if (l) $0 = $0 substr("====", 1, 4 - l); print }' \
+            | base64 -d 2>/dev/null | jq -c '{iss, sub, aud, access, exp}' || echo "no token returned"
+
+          echo "--- anonymous view of ghcr.io/cbuntingde/minio (does it already exist?) ---"
+          curl -s "https://ghcr.io/token?service=ghcr.io&scope=repository:cbuntingde/minio:pull" \
+            -o /tmp/anon.json -w 'anon-token http=%{http_code}\n'
+          ANON=$(jq -r '.token // empty' /tmp/anon.json)
+          curl -s -H "Authorization: Bearer $ANON" -w '\ntags-list http=%{http_code}\n' \
+            "https://ghcr.io/v2/cbuntingde/minio/tags/list"
+
+          echo "--- manifest probe for :master with GITHUB_TOKEN ---"
+          curl -s -H "Authorization: Bearer $TOKEN" -w '\nmanifest http=%{http_code}\n' \
+            "https://ghcr.io/v2/cbuntingde/minio/manifests/master"
+
+          echo "--- blank-name sanity probe (a definitely-unused repository name) ---"
+          curl -s -H "Authorization: Bearer $TOKEN" -w '\nunused-name http=%{http_code}\n' \
+            "https://ghcr.io/v2/cbuntingde/ghcr-probe-does-not-exist-12345/manifests/latest"
