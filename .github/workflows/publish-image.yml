@@ -54,6 +54,23 @@ jobs:
             echo "push access confirmed"
             exit 0
           fi
+
+          if [ "$code" != "403" ]; then
+            # Not an access decision: the registry is unreachable or erroring.
+            echo "::error title=GHCR unavailable::could not verify push access for ${{ github.repository }} (http=$code)."
+            {
+              echo "### Could not verify GHCR push access"
+              echo
+              echo "ghcr.io answered http=\`$code\` instead of an authorization decision,"
+              echo "so this is a registry availability problem rather than a permission one."
+              echo "Registry response: \`$(tr -d '\n' < /tmp/grant.json)\`"
+              echo
+              echo "Check <https://www.githubstatus.com/> and re-run the workflow."
+            } >> "$GITHUB_STEP_SUMMARY"
+            cat /tmp/grant.json
+            exit 1
+          fi
+
           echo "::error title=GHCR push denied::ghcr.io did not grant push access for ${{ github.repository }} (http=$code, actions=${actions:-none})."
           {
             echo "### GHCR push access denied"
