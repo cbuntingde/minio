@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: Extra tag to publish for this manual build (default: manual)
+        description: "Extra tag to publish for this manual build (default: manual)"
         required: false
         default: manual
 
