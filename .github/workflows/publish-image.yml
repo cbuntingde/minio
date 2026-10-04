@@ -28,29 +28,49 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
-      # GHCR only grants an Actions token push access to a package that is
-      # linked to this repository, and the link is created by the first publish
-      # *from* a repository. If ghcr.io/<owner>/<repo> already exists from an
-      # earlier, differently-credited push, GITHUB_TOKEN is refused with
-      # "denied: permission_denied: write_package". GHCR never grants push for
-      # an unlinked package name (nor for names that match no repository), so
-      # check the grant up front and fail with the fix in seconds instead of
-      # after a full build.
+      # GHCR grants an Actions token write access to a package only after that
+      # package is linked to this repository, and the link is created by the
+      # first publish *from* a repository. A package that already exists under
+      # this name from an earlier, differently-credited push therefore leaves
+      # GITHUB_TOKEN read-only, and the push fails with "denied:
+      # permission_denied: write_package" after a full multi-arch build.
+      #
+      # A refused grant is not fatal on its own. ghcr.io issues no scope for a
+      # package name that matches nothing, yet it still creates such a package
+      # on the first write and links it to the pushing repository. So this
+      # check asks whether the package already exists and fails fast only when
+      # it does exist and the token was refused anyway.
       - name: Check the registry grant for ${{ github.repository }}
         env:
           GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           token="${GHCR_TOKEN:-$GITHUB_TOKEN}"
-          scope="repository:${{ github.repository }}:pull,push"
+          repo="${{ github.repository }}"
+          scope="repository:$repo:pull,push"
+
+          # Anonymous pull is granted for a public package, so a 200 here means
+          # the package already exists. DENIED means either "no such package" or
+          # "private"; both are handled the same way below.
+          anon_code=$(curl -s -o /tmp/anon.json -w '%{http_code}' \
+            "https://ghcr.io/token?service=ghcr.io&scope=repository:$repo:pull")
+
           code=$(curl -s -H "Authorization: Bearer $token" -o /tmp/grant.json -w '%{http_code}' \
             "https://ghcr.io/token?service=ghcr.io&scope=$scope")
-          actions=$(jq -r '.token // empty' /tmp/grant.json | awk -F. '{print $2}' \
-            | tr '-_' '+/' \
-            | awk '{ l = length($0) % 4; if (l) $0 = $0 substr("====", 1, 4 - l); print }' \
-            | base64 -d 2>/dev/null | jq -r '[.access[]?.actions[]?] | join(",")' 2>/dev/null || true)
-          echo "ghcr.io scope '$scope': http=$code actions=${actions:-none}"
-          if [ "$code" = "200" ] && printf ',%s,' "$actions" | grep -q ',push,'; then
+          if [ "$anon_code" = "200" ]; then
+            exists=yes
+          else
+            exists=no
+          fi
+          echo "ghcr.io package $repo exists: $exists"
+          echo "ghcr.io scope '$scope': http=$code"
+
+          # ghcr.io answers 200 only when it issues a token carrying the whole
+          # requested scope, so the status code is the decision. The token
+          # itself is opaque ("v1:<repo>:<id>") rather than a JWT, so there is
+          # no access list to decode and no way to read back the granted
+          # actions: the code is all the evidence there is.
+          if [ "$code" = "200" ]; then
             echo "push access confirmed"
             exit 0
           fi
@@ -71,12 +91,20 @@ jobs:
             exit 1
           fi
 
-          echo "::error title=GHCR push denied::ghcr.io did not grant push access for ${{ github.repository }} (http=$code, actions=${actions:-none})."
+          if [ "$exists" = "no" ]; then
+            # The refusal above is expected for a package that does not exist
+            # yet: ghcr.io issues no scope for an unknown name, then creates the
+            # package on the first write and links it to this repository. Let the
+            # build proceed and do the creating.
+            echo "no package at ghcr.io/$repo yet; the publish below will create and link it"
+            exit 0
+          fi
+
+          echo "::error title=GHCR push denied::ghcr.io did not grant push access for $repo (http=$code)."
           {
             echo "### GHCR push access denied"
             echo
-            echo "ghcr.io did not grant push access for \`${{ github.repository }}\`"
-            echo "(http=\`$code\`, granted actions=\`${actions:-none}\`)."
+            echo "ghcr.io did not grant push access for \`$repo\` (http=\`$code\`)."
             echo
             echo "**Cause**: \`ghcr.io/${{ github.repository }}\` already exists but is not"
             echo "linked to this repository, so the Actions token has no write access to it."
@@ -86,7 +114,7 @@ jobs:
             echo
             echo "1. Grant this repository write access to the existing package:"
             echo "   https://github.com/users/${{ github.repository_owner }}/packages/container/${{ github.event.repository.name }}/settings"
-            echo "   -> \`Manage Actions access\` -> \`Add Repository\` -> \`${{ github.repository }}\` -> Role: **Write**"
+            echo "   -> \`Manage Actions access\` -> \`Add Repository\` -> \`$repo\` -> Role: **Write**"
             echo
             echo "2. Publish with a personal access token that has the \`write:packages\` scope:"
             echo "   store it as the repository secret \`GHCR_TOKEN\`; this workflow prefers that"
