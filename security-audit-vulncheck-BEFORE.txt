@@ -1,0 +1,774 @@
+=== Symbol Results ===
+
+Vulnerability #1: GO-2026-6505
+    OpenTelemetry-Go: Exporter config logging may leak endpoint URLs in info
+    logs in go.opentelemetry.io/otel/exporters/otlp/otlptrace
+  More info: https://pkg.go.dev/vuln/GO-2026-6505
+  Module: go.opentelemetry.io/otel/sdk
+    Found in: go.opentelemetry.io/otel/sdk@v1.35.0
+    Fixed in: go.opentelemetry.io/otel/sdk@v1.45.0
+    Example traces found:
+      #1: cmd/warm-backend-gcs.go:26:2: cmd.init calls storage.init, which eventually calls instrumentation.init
+      #2: cmd/warm-backend-gcs.go:26:2: cmd.init calls storage.init, which calls resource.init
+      #3: cmd/warm-backend-gcs.go:26:2: cmd.init calls storage.init, which eventually calls sdk.init
+      #4: cmd/warm-backend-gcs.go:26:2: cmd.init calls storage.init, which eventually calls x.init
+
+Vulnerability #2: GO-2026-6503
+    RabbitMQ amqp091-go: Denial of Service via Sub-Spec Frame Size Negotiation
+    in github.com/rabbitmq/amqp091-go
+  More info: https://pkg.go.dev/vuln/GO-2026-6503
+  Module: github.com/rabbitmq/amqp091-go
+    Found in: github.com/rabbitmq/amqp091-go@v1.10.0
+    Fixed in: github.com/rabbitmq/amqp091-go@v1.13.0
+    Example traces found:
+      #1: internal/event/target/amqp.go:207:26: target.AMQPTarget.channel calls amqp091.Dial
+
+Vulnerability #3: GO-2026-6500
+    RabbitMQ amqp091-go: Resource Exhaustion (OOM) via Unbounded Body Buffer
+    Allocation in github.com/rabbitmq/amqp091-go
+  More info: https://pkg.go.dev/vuln/GO-2026-6500
+  Module: github.com/rabbitmq/amqp091-go
+    Found in: github.com/rabbitmq/amqp091-go@v1.10.0
+    Fixed in: github.com/rabbitmq/amqp091-go@v1.13.0
+    Example traces found:
+      #1: internal/event/target/amqp.go:207:26: target.AMQPTarget.channel calls amqp091.Dial
+
+Vulnerability #4: GO-2026-6498
+    RabbitMQ amqp091-go: Silent Data Truncation and State Corruption via
+    Shortstr Integer Overflow in github.com/rabbitmq/amqp091-go
+  More info: https://pkg.go.dev/vuln/GO-2026-6498
+  Module: github.com/rabbitmq/amqp091-go
+    Found in: github.com/rabbitmq/amqp091-go@v1.10.0
+    Fixed in: github.com/rabbitmq/amqp091-go@v1.13.0
+    Example traces found:
+      #1: internal/event/target/amqp.go:306:2: target.AMQPTarget.SendFromStore calls amqp091.Channel.Close
+      #2: internal/event/target/amqp.go:190:25: target.AMQPTarget.channel calls amqp091.Channel.Confirm
+      #3: internal/event/target/amqp.go:252:29: target.AMQPTarget.send calls amqp091.Channel.ExchangeDeclare
+      #4: internal/event/target/amqp.go:257:21: target.AMQPTarget.send calls amqp091.Channel.Publish
+      #5: internal/event/target/amqp.go:186:32: target.AMQPTarget.channel calls amqp091.Connection.Channel
+      #6: internal/event/target/amqp.go:330:27: target.AMQPTarget.Close calls amqp091.Connection.Close
+      #7: internal/event/target/amqp.go:207:26: target.AMQPTarget.channel calls amqp091.Dial
+
+Vulnerability #5: GO-2026-6496
+    RabbitMQ amqp091-go: Protocol Desynchronization and Frame Injection via
+    Integer Overflow in readLongstr in github.com/rabbitmq/amqp091-go
+  More info: https://pkg.go.dev/vuln/GO-2026-6496
+  Module: github.com/rabbitmq/amqp091-go
+    Found in: github.com/rabbitmq/amqp091-go@v1.10.0
+    Fixed in: github.com/rabbitmq/amqp091-go@v1.13.0
+    Example traces found:
+      #1: internal/event/target/amqp.go:207:26: target.AMQPTarget.channel calls amqp091.Dial
+
+Vulnerability #6: GO-2026-6494
+    RabbitMQ amqp091-go: Denial of Service via Malicious Field Length in AMQP
+    Client in github.com/rabbitmq/amqp091-go
+  More info: https://pkg.go.dev/vuln/GO-2026-6494
+  Module: github.com/rabbitmq/amqp091-go
+    Found in: github.com/rabbitmq/amqp091-go@v1.10.0
+    Fixed in: github.com/rabbitmq/amqp091-go@v1.13.0
+    Example traces found:
+      #1: internal/event/target/amqp.go:207:26: target.AMQPTarget.channel calls amqp091.Dial
+
+Vulnerability #7: GO-2026-6493
+    RabbitMQ amqp091-go: Connection Configuration Overwrite via Unsanitized TLS
+    Path Parameter Injection in github.com/rabbitmq/amqp091-go
+  More info: https://pkg.go.dev/vuln/GO-2026-6493
+  Module: github.com/rabbitmq/amqp091-go
+    Found in: github.com/rabbitmq/amqp091-go@v1.10.0
+    Fixed in: github.com/rabbitmq/amqp091-go@v1.13.0
+    Example traces found:
+      #1: internal/config/notify/legacy.go:127:25: notify.SetNotifyAMQP calls amqp091.URI.String
+
+Vulnerability #8: GO-2026-6492
+    RabbitMQ amqp091-go: Missing Explicit TLS Minimum Version Configuration In
+    URI Parser in github.com/rabbitmq/amqp091-go
+  More info: https://pkg.go.dev/vuln/GO-2026-6492
+  Module: github.com/rabbitmq/amqp091-go
+    Found in: github.com/rabbitmq/amqp091-go@v1.10.0
+    Fixed in: github.com/rabbitmq/amqp091-go@v1.13.0
+    Example traces found:
+      #1: internal/event/target/amqp.go:207:26: target.AMQPTarget.channel calls amqp091.Dial
+
+Vulnerability #9: GO-2026-6491
+    RabbitMQ amqp091-go: Plaintext Credential Exposure via Exported PLAIN
+    Authentication Struct Fields in github.com/rabbitmq/amqp091-go
+  More info: https://pkg.go.dev/vuln/GO-2026-6491
+  Module: github.com/rabbitmq/amqp091-go
+    Found in: github.com/rabbitmq/amqp091-go@v1.10.0
+    Fixed in: github.com/rabbitmq/amqp091-go@v1.13.0
+    Example traces found:
+      #1: internal/event/target/amqp.go:207:26: target.AMQPTarget.channel calls amqp091.Dial
+
+Vulnerability #10: GO-2026-6372
+    Potential Memory Exhaustion/Protocol Violation via Broker-Controlled
+    Oversized Payload in github.com/rabbitmq/amqp091-go
+  More info: https://pkg.go.dev/vuln/GO-2026-6372
+  Module: github.com/rabbitmq/amqp091-go
+    Found in: github.com/rabbitmq/amqp091-go@v1.10.0
+    Fixed in: github.com/rabbitmq/amqp091-go@v1.13.0
+    Example traces found:
+      #1: internal/event/target/amqp.go:306:2: target.AMQPTarget.SendFromStore calls amqp091.Channel.Close
+      #2: internal/event/target/amqp.go:190:25: target.AMQPTarget.channel calls amqp091.Channel.Confirm
+      #3: internal/event/target/amqp.go:252:29: target.AMQPTarget.send calls amqp091.Channel.ExchangeDeclare
+      #4: internal/event/target/amqp.go:189:33: target.AMQPTarget.channel calls amqp091.Channel.NotifyPublish
+      #5: internal/event/target/amqp.go:257:21: target.AMQPTarget.send calls amqp091.Channel.Publish
+      #6: internal/event/target/amqp.go:186:32: target.AMQPTarget.channel calls amqp091.Connection.Channel
+      #7: internal/event/target/amqp.go:330:27: target.AMQPTarget.Close calls amqp091.Connection.Close
+      #8: internal/event/target/amqp.go:207:26: target.AMQPTarget.channel calls amqp091.Dial
+      #9: cmd/object-handlers.go:3448:33: cmd.objectAPIHandlers.PostRestoreObjectHandler calls amqp091.Error.Error
+      #10: internal/config/notify/parse.go:1709:31: notify.GetNotifyAMQP calls amqp091.ParseURI
+      #11: internal/config/notify/legacy.go:127:25: notify.SetNotifyAMQP calls amqp091.URI.String
+      #12: internal/event/target/amqp.go:36:2: target.init calls amqp091.init
+      #13: cmd/object-api-utils.go:1007:11: cmd.GetObjectReader.Close calls sync.Once.Do, which eventually calls amqp091.shutdown
+      #14: cmd/object-api-utils.go:1007:11: cmd.GetObjectReader.Close calls sync.Once.Do, which eventually calls amqp091.shutdown
+
+Vulnerability #11: GO-2026-6355
+    Prevent DoS on deadlocked established channel in golang.org/x/crypto/ssh
+  More info: https://pkg.go.dev/vuln/GO-2026-6355
+  Module: golang.org/x/crypto
+    Found in: golang.org/x/crypto@v0.37.0
+    Fixed in: golang.org/x/crypto@v0.56.0
+    Example traces found:
+      #1: cmd/sftp-server.go:519:25: cmd.startSFTPServer calls sftp.Server.Listen, which eventually calls ssh.NewServerConn
+
+Vulnerability #12: GO-2026-6354
+    Prevent DoS on deadlocked undecided channel in golang.org/x/crypto/ssh
+  More info: https://pkg.go.dev/vuln/GO-2026-6354
+  Module: golang.org/x/crypto
+    Found in: golang.org/x/crypto@v0.37.0
+    Fixed in: golang.org/x/crypto@v0.56.0
+    Example traces found:
+      #1: cmd/sftp-server.go:519:25: cmd.startSFTPServer calls sftp.Server.Listen, which eventually calls ssh.NewServerConn
+
+Vulnerability #13: GO-2026-6348
+    Heap Memory Exhaustion (OOM) via HTTP/2 DATA Frame Fragmentation in
+    google.golang.org/grpc
+  More info: https://pkg.go.dev/vuln/GO-2026-6348
+  Module: google.golang.org/grpc
+    Found in: google.golang.org/grpc@v1.72.0
+    Fixed in: google.golang.org/grpc@v1.83.1
+    Example traces found:
+      #1: internal/config/dns/etcd_dns.go:200:32: dns.CoreDNS.DeleteRecord calls client.kv.Delete, which eventually calls mem.BufferSlice.MaterializeToBuffer
+      #2: cmd/object-api-utils.go:1007:11: cmd.GetObjectReader.Close calls sync.Once.Do, which eventually calls mem.Copy
+      #3: internal/config/dns/etcd_dns.go:200:32: dns.CoreDNS.DeleteRecord calls client.kv.Delete, which eventually calls mem.IsBelowBufferPoolingThreshold
+      #4: internal/config/dns/etcd_dns.go:200:32: dns.CoreDNS.DeleteRecord calls client.kv.Delete, which eventually calls mem.NewBuffer
+      #5: internal/config/dns/etcd_dns.go:200:32: dns.CoreDNS.DeleteRecord calls client.kv.Delete, which eventually calls mem.ReadAll
+      #6: cmd/admin-handlers.go:3323:3: cmd.adminAPIHandlers.InspectDataHandler calls zip.Writer.Close, which eventually calls mem.writer.Write
+      #7: internal/config/dns/etcd_dns.go:200:32: dns.CoreDNS.DeleteRecord calls client.kv.Delete, which eventually calls transport.ClientStream.Close
+      #8: internal/config/dns/etcd_dns.go:200:32: dns.CoreDNS.DeleteRecord calls client.kv.Delete, which eventually calls transport.ClientStream.Header
+      #9: internal/config/dns/etcd_dns.go:200:32: dns.CoreDNS.DeleteRecord calls client.kv.Delete, which eventually calls transport.ClientStream.Read
+      #10: internal/config/dns/etcd_dns.go:200:32: dns.CoreDNS.DeleteRecord calls client.kv.Delete, which eventually calls transport.ClientStream.RecvCompress
+      #11: internal/config/dns/etcd_dns.go:200:32: dns.CoreDNS.DeleteRecord calls client.kv.Delete, which eventually calls transport.ClientStream.TrailersOnly
+      #12: cmd/object-api-utils.go:1007:11: cmd.GetObjectReader.Close calls sync.Once.Do, which eventually calls transport.NewHTTP2Client
+      #13: internal/config/dns/etcd_dns.go:200:32: dns.CoreDNS.DeleteRecord calls client.kv.Delete, which eventually calls transport.Stream.ReadMessageHeader
+      #14: internal/config/dns/etcd_dns.go:54:20: dns.CoreDNS.Close calls client.Client.Close, which eventually calls transport.http2Client.Close
+      #15: internal/config/dns/etcd_dns.go:54:20: dns.CoreDNS.Close calls client.Client.Close, which eventually calls transport.http2Client.GracefulClose
+      #16: internal/config/dns/etcd_dns.go:200:32: dns.CoreDNS.DeleteRecord calls client.kv.Delete, which eventually calls transport.http2Client.NewStream
+
+Vulnerability #14: GO-2026-6303
+    Source-address critical option not enforced for non-public-key auth
+    callbacks in golang.org/x/crypto/ssh
+  More info: https://pkg.go.dev/vuln/GO-2026-6303
+  Module: golang.org/x/crypto
+    Found in: golang.org/x/crypto@v0.37.0
+    Fixed in: golang.org/x/crypto@v0.55.0
+    Example traces found:
+      #1: cmd/sftp-server.go:519:25: cmd.startSFTPServer calls sftp.Server.Listen, which eventually calls ssh.NewServerConn
+
+Vulnerability #15: GO-2026-6218
+    Avoid quadratic complexity in resolvePath in net/url
+  More info: https://pkg.go.dev/vuln/GO-2026-6218
+  Standard library
+    Found in: net/url@go1.24.13
+    Fixed in: net/url@go1.25.13
+    Example traces found:
+      #1: cmd/utils.go:1061:23: cmd.MockOpenIDTestUserInteraction calls http.Client.Do, which eventually calls url.URL.Parse
+      #2: cmd/warm-backend-gcs.go:65:20: cmd.warmBackendGCS.PutWithMeta calls storage.Writer.Close, which eventually calls url.URL.ResolveReference
+
+Vulnerability #16: GO-2026-6091
+    Fix Javascript regexp context tracking in html/template
+  More info: https://pkg.go.dev/vuln/GO-2026-6091
+  Standard library
+    Found in: html/template@go1.24.13
+    Fixed in: html/template@go1.25.13
+    Example traces found:
+      #1: cmd/metrics-v3-handler.go:250:33: cmd.metricsV3Server.ServeHTTP calls http.HandlerFunc.ServeHTTP, which eventually calls template.Template.Execute
+      #2: cmd/metrics-v3-handler.go:250:33: cmd.metricsV3Server.ServeHTTP calls http.HandlerFunc.ServeHTTP, which eventually calls template.Template.ExecuteTemplate
+
+Vulnerability #17: GO-2026-6090
+    Limit handshake messages we are willing to accept post-handshake in
+    crypto/tls
+  More info: https://pkg.go.dev/vuln/GO-2026-6090
+  Standard library
+    Found in: crypto/tls@go1.24.13
+    Fixed in: crypto/tls@go1.25.13
+    Example traces found:
+      #1: cmd/iam.go:1729:42: cmd.IAMSys.NormalizeLDAPMappingImport calls ldap.Config.Connect, which eventually calls tls.Conn.Handshake
+      #2: internal/grid/debug.go:164:14: grid.startHTTPServer calls httptest.Server.Start, which eventually calls tls.Conn.HandshakeContext
+      #3: internal/s3select/select.go:761:24: s3select.ObjectReadSeekCloser.Read calls http.readWriteCloserBody.Read, which calls tls.Conn.Read
+      #4: cmd/admin-handlers.go:3403:13: cmd.adminAPIHandlers.InspectDataHandler calls fmt.Fprintf, which calls tls.Conn.Write
+      #5: internal/http/transports.go:196:23: http.uaTransport.RoundTrip calls http.Transport.RoundTrip, which eventually calls tls.Dial
+      #6: cmd/iam.go:1729:42: cmd.IAMSys.NormalizeLDAPMappingImport calls ldap.Config.Connect, which eventually calls tls.DialWithDialer
+      #7: internal/http/transports.go:196:23: http.uaTransport.RoundTrip calls http.Transport.RoundTrip, which eventually calls tls.Dialer.DialContext
+
+Vulnerability #18: GO-2026-6089
+    Apply ReadHeaderTimeout when doing unencrypted HTTP/2 check in net/http
+  More info: https://pkg.go.dev/vuln/GO-2026-6089
+  Standard library
+    Found in: net/http@go1.24.13
+    Fixed in: net/http@go1.25.13
+    Example traces found:
+      #1: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls http.ListenAndServe
+      #2: internal/grid/debug.go:164:14: grid.startHTTPServer calls httptest.Server.Start, which eventually calls http.Server.Serve
+
+Vulnerability #19: GO-2026-6088
+    Add recursion depth guard during decode in encoding/xml
+  More info: https://pkg.go.dev/vuln/GO-2026-6088
+  Standard library
+    Found in: encoding/xml@go1.24.13
+    Fixed in: encoding/xml@go1.25.13
+    Example traces found:
+      #1: internal/s3select/select.go:676:36: s3select.NewS3Select calls xml.Decoder.Decode
+      #2: internal/bucket/object/lock/lock.go:558:29: lock.ObjectLegalHold.UnmarshalXML calls xml.Decoder.DecodeElement
+      #3: internal/bucket/object/lock/lock.go:546:20: lock.ObjectLegalHold.UnmarshalXML calls xml.Decoder.Token
+      #4: cmd/bucket-metadata-sys.go:197:27: cmd.BucketMetadataSys.Delete calls xml.Unmarshal
+
+Vulnerability #20: GO-2026-6061
+    Vulnerabilities in the xDS RBAC authorization engine and the HTTP/2
+    transport server implementation in google.golang.org/grpc
+  More info: https://pkg.go.dev/vuln/GO-2026-6061
+  Module: google.golang.org/grpc
+    Found in: google.golang.org/grpc@v1.72.0
+    Fixed in: google.golang.org/grpc@v1.82.1
+    Example traces found:
+      #1: cmd/object-api-utils.go:1007:11: cmd.GetObjectReader.Close calls sync.Once.Do, which eventually calls rbac.NewChainEngine
+      #2: internal/config/dns/etcd_dns.go:200:32: dns.CoreDNS.DeleteRecord calls client.kv.Delete, which eventually calls transport.ClientStream.Close
+      #3: internal/config/dns/etcd_dns.go:200:32: dns.CoreDNS.DeleteRecord calls client.kv.Delete, which eventually calls transport.ClientStream.Header
+      #4: internal/config/dns/etcd_dns.go:200:32: dns.CoreDNS.DeleteRecord calls client.kv.Delete, which eventually calls transport.ClientStream.Read
+      #5: internal/config/dns/etcd_dns.go:200:32: dns.CoreDNS.DeleteRecord calls client.kv.Delete, which eventually calls transport.ClientStream.RecvCompress
+      #6: internal/config/dns/etcd_dns.go:200:32: dns.CoreDNS.DeleteRecord calls client.kv.Delete, which eventually calls transport.ClientStream.TrailersOnly
+      #7: internal/config/dns/etcd_dns.go:200:32: dns.CoreDNS.DeleteRecord calls client.kv.Delete, which eventually calls transport.ClientStream.Write
+      #8: cmd/object-api-utils.go:1007:11: cmd.GetObjectReader.Close calls sync.Once.Do, which eventually calls transport.NewHTTP2Client
+      #9: internal/config/dns/etcd_dns.go:200:32: dns.CoreDNS.DeleteRecord calls client.kv.Delete, which eventually calls transport.Stream.ReadMessageHeader
+      #10: internal/config/dns/etcd_dns.go:54:20: dns.CoreDNS.Close calls client.Client.Close, which eventually calls transport.http2Client.Close
+      #11: internal/config/dns/etcd_dns.go:54:20: dns.CoreDNS.Close calls client.Client.Close, which eventually calls transport.http2Client.GracefulClose
+      #12: internal/config/dns/etcd_dns.go:200:32: dns.CoreDNS.DeleteRecord calls client.kv.Delete, which eventually calls transport.http2Client.NewStream
+
+Vulnerability #21: GO-2026-5972
+    Enforce maximum recursion depth in encoding/asn1
+  More info: https://pkg.go.dev/vuln/GO-2026-5972
+  Standard library
+    Found in: encoding/asn1@go1.24.13
+    Fixed in: encoding/asn1@go1.25.13
+    Example traces found:
+      #1: cmd/admin-handlers.go:3205:38: cmd.bytesToPublicKey calls x509.ParsePKCS1PublicKey, which calls asn1.Unmarshal
+
+Vulnerability #22: GO-2026-5970
+    Infinite loop on invalid input in golang.org/x/text
+  More info: https://pkg.go.dev/vuln/GO-2026-5970
+  Module: golang.org/x/text
+    Found in: golang.org/x/text@v0.24.0
+    Fixed in: golang.org/x/text@v0.39.0
+    Example traces found:
+      #1: internal/http/transports.go:196:23: http.uaTransport.RoundTrip calls http.Transport.RoundTrip, which eventually calls norm.Form.Bytes
+      #2: internal/http/transports.go:196:23: http.uaTransport.RoundTrip calls http.Transport.RoundTrip, which eventually calls norm.Form.IsNormalString
+      #3: internal/http/transports.go:196:23: http.uaTransport.RoundTrip calls http.Transport.RoundTrip, which eventually calls norm.Form.QuickSpan
+      #4: internal/logger/target/kafka/kafka_scram_client_contrib.go:66:29: kafka.XDGSCRAMClient.Begin calls scram.HashGeneratorFcn.NewClient, which eventually calls norm.Form.String
+
+Vulnerability #23: GO-2026-5856
+    Invoking Encrypted Client Hello privacy leak in crypto/tls
+  More info: https://pkg.go.dev/vuln/GO-2026-5856
+  Standard library
+    Found in: crypto/tls@go1.24.13
+    Fixed in: crypto/tls@go1.25.12
+    Example traces found:
+      #1: cmd/iam.go:1729:42: cmd.IAMSys.NormalizeLDAPMappingImport calls ldap.Config.Connect, which eventually calls tls.Conn.Handshake
+      #2: internal/grid/debug.go:164:14: grid.startHTTPServer calls httptest.Server.Start, which eventually calls tls.Conn.HandshakeContext
+      #3: internal/s3select/select.go:761:24: s3select.ObjectReadSeekCloser.Read calls http.readWriteCloserBody.Read, which calls tls.Conn.Read
+      #4: cmd/admin-handlers.go:3403:13: cmd.adminAPIHandlers.InspectDataHandler calls fmt.Fprintf, which calls tls.Conn.Write
+      #5: internal/http/transports.go:196:23: http.uaTransport.RoundTrip calls http.Transport.RoundTrip, which eventually calls tls.Dial
+      #6: cmd/iam.go:1729:42: cmd.IAMSys.NormalizeLDAPMappingImport calls ldap.Config.Connect, which eventually calls tls.DialWithDialer
+      #7: internal/http/transports.go:196:23: http.uaTransport.RoundTrip calls http.Transport.RoundTrip, which eventually calls tls.Dialer.DialContext
+
+Vulnerability #24: GO-2026-5710
+    Prometheus Azure AD remote write OAuth client secret exposed via config API
+    in github.com/prometheus/prometheus
+  More info: https://pkg.go.dev/vuln/GO-2026-5710
+  Module: github.com/prometheus/prometheus
+    Found in: github.com/prometheus/prometheus@v0.303.0
+    Fixed in: github.com/prometheus/prometheus@v0.311.3
+    Example traces found:
+      #1: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.FloatHistogram.NegativeBucketIterator
+      #2: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.FloatHistogram.PositiveBucketIterator
+      #3: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.FloatHistogram.ZeroBucket
+      #4: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.Histogram.NegativeBucketIterator
+      #5: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.Histogram.PositiveBucketIterator
+      #6: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.Histogram.ZeroBucket
+      #7: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.baseBucketIterator[uint64, int64].At[uint64 int64]
+      #8: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.floatBucketIterator.At
+      #9: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.floatBucketIterator.Next
+      #10: internal/logger/logger.go:36:2: logger.init calls madmin.init, which eventually calls histogram.init
+      #11: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.regularBucketIterator.Next
+
+Vulnerability #25: GO-2026-5662
+    Prometheus has Stored XSS via metric names and label values in Prometheus
+    web UI in github.com/prometheus/prometheus
+  More info: https://pkg.go.dev/vuln/GO-2026-5662
+  Module: github.com/prometheus/prometheus
+    Found in: github.com/prometheus/prometheus@v0.303.0
+    Fixed in: github.com/prometheus/prometheus@v0.311.2-0.20260410083055-07c6232d159b
+    Example traces found:
+      #1: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.FloatHistogram.NegativeBucketIterator
+      #2: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.FloatHistogram.PositiveBucketIterator
+      #3: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.FloatHistogram.ZeroBucket
+      #4: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.Histogram.NegativeBucketIterator
+      #5: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.Histogram.PositiveBucketIterator
+      #6: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.Histogram.ZeroBucket
+      #7: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.baseBucketIterator[uint64, int64].At[uint64 int64]
+      #8: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.floatBucketIterator.At
+      #9: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.floatBucketIterator.Next
+      #10: internal/logger/logger.go:36:2: logger.init calls madmin.init, which eventually calls histogram.init
+      #11: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.regularBucketIterator.Next
+
+Vulnerability #26: GO-2026-5381
+    Prometheus vulnerable to stored XSS via crafted histogram bucket label
+    values in the old web UI heatmap display in github.com/prometheus/prometheus
+  More info: https://pkg.go.dev/vuln/GO-2026-5381
+  Module: github.com/prometheus/prometheus
+    Found in: github.com/prometheus/prometheus@v0.303.0
+    Fixed in: github.com/prometheus/prometheus@v0.311.3
+    Example traces found:
+      #1: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.FloatHistogram.NegativeBucketIterator
+      #2: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.FloatHistogram.PositiveBucketIterator
+      #3: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.FloatHistogram.ZeroBucket
+      #4: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.Histogram.NegativeBucketIterator
+      #5: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.Histogram.PositiveBucketIterator
+      #6: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.Histogram.ZeroBucket
+      #7: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.baseBucketIterator[uint64, int64].At[uint64 int64]
+      #8: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.floatBucketIterator.At
+      #9: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.floatBucketIterator.Next
+      #10: internal/logger/logger.go:36:2: logger.init calls madmin.init, which eventually calls histogram.init
+      #11: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.regularBucketIterator.Next
+
+Vulnerability #27: GO-2026-5264
+    Prometheus: Remote read endpoint allows denial of service via crafted snappy
+    payload in github.com/prometheus/prometheus
+  More info: https://pkg.go.dev/vuln/GO-2026-5264
+  Module: github.com/prometheus/prometheus
+    Found in: github.com/prometheus/prometheus@v0.303.0
+    Fixed in: github.com/prometheus/prometheus@v0.305.2
+    Example traces found:
+      #1: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.FloatHistogram.NegativeBucketIterator
+      #2: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.FloatHistogram.PositiveBucketIterator
+      #3: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.FloatHistogram.ZeroBucket
+      #4: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.Histogram.NegativeBucketIterator
+      #5: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.Histogram.PositiveBucketIterator
+      #6: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.Histogram.ZeroBucket
+      #7: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.baseBucketIterator[uint64, int64].At[uint64 int64]
+      #8: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.floatBucketIterator.At
+      #9: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.floatBucketIterator.Next
+      #10: internal/logger/logger.go:36:2: logger.init calls madmin.init, which eventually calls histogram.init
+      #11: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls histogram.regularBucketIterator.Next
+
+Vulnerability #28: GO-2026-5039
+    Arbitrary inputs are included in errors without any escaping in
+    net/textproto
+  More info: https://pkg.go.dev/vuln/GO-2026-5039
+  Standard library
+    Found in: net/textproto@go1.24.13
+    Fixed in: net/textproto@go1.25.11
+    Example traces found:
+      #1: internal/s3select/select.go:761:24: s3select.ObjectReadSeekCloser.Read calls http.body.Read, which eventually calls textproto.Reader.ReadMIMEHeader
+
+Vulnerability #29: GO-2026-5037
+    Inefficient candidate hostname parsing in crypto/x509
+  More info: https://pkg.go.dev/vuln/GO-2026-5037
+  Standard library
+    Found in: crypto/x509@go1.24.13
+    Fixed in: crypto/x509@go1.25.11
+    Example traces found:
+      #1: cmd/sts-handlers.go:858:31: cmd.stsAPIHandlers.AssumeRoleWithCertificate calls x509.Certificate.Verify
+      #2: internal/s3select/select.go:761:24: s3select.ObjectReadSeekCloser.Read calls http.readWriteCloserBody.Read, which eventually calls x509.Certificate.VerifyHostname
+      #3: cmd/object-handlers.go:3448:33: cmd.objectAPIHandlers.PostRestoreObjectHandler calls x509.HostnameError.Error
+
+Vulnerability #30: GO-2026-5026
+    Invoking failure to reject ASCII-only Punycode-encoded labels in
+    golang.org/x/net/idna
+  More info: https://pkg.go.dev/vuln/GO-2026-5026
+  Module: golang.org/x/net
+    Found in: golang.org/x/net@v0.39.0
+    Fixed in: golang.org/x/net@v0.55.0
+    Example traces found:
+      #1: internal/http/transports.go:196:23: http.uaTransport.RoundTrip calls http.Transport.RoundTrip, which eventually calls idna.ToASCII
+
+  Standard library
+    Found in: net/http@go1.24.13
+    Fixed in: net/http@go1.25.13
+    Example traces found:
+      #1: cmd/site-replication.go:3998:37: cmd.SiteReplicationSys.EditPeerCluster calls madmin.AdminClient.ServerInfo, which eventually calls http.Client.CloseIdleConnections
+      #2: cmd/utils.go:1061:23: cmd.MockOpenIDTestUserInteraction calls http.Client.Do
+      #3: internal/config/identity/openid/jwt.go:89:25: openid.Config.PopulatePublicKey calls http.Client.Get
+      #4: cmd/metrics-v3-handler.go:250:33: cmd.metricsV3Server.ServeHTTP calls http.HandlerFunc.ServeHTTP, which eventually calls http.Client.PostForm
+      #5: internal/rest/client.go:245:42: rest.Client.dumpHTTP calls httputil.DumpRequestOut, which calls http.Transport.CloseIdleConnections
+      #6: internal/http/transports.go:196:23: http.uaTransport.RoundTrip calls http.Transport.RoundTrip
+
+Vulnerability #31: GO-2026-5023
+    Invoking VerifiedPublicKeyCallback permissions skip enforcement in
+    golang.org/x/crypto/ssh
+  More info: https://pkg.go.dev/vuln/GO-2026-5023
+  Module: golang.org/x/crypto
+    Found in: golang.org/x/crypto@v0.37.0
+    Fixed in: golang.org/x/crypto@v0.52.0
+    Example traces found:
+      #1: cmd/sftp-server.go:519:25: cmd.startSFTPServer calls sftp.Server.Listen, which eventually calls ssh.NewServerConn
+
+Vulnerability #32: GO-2026-5020
+    Invoking infinite loop on large channel writes in golang.org/x/crypto/ssh
+  More info: https://pkg.go.dev/vuln/GO-2026-5020
+  Module: golang.org/x/crypto
+    Found in: golang.org/x/crypto@v0.37.0
+    Fixed in: golang.org/x/crypto@v0.52.0
+    Example traces found:
+      #1: cmd/sftp-server.go:519:25: cmd.startSFTPServer calls sftp.Server.Listen, which eventually calls ssh.NewServerConn
+
+Vulnerability #33: GO-2026-5019
+    Invoking bypass of FIDO/U2F security keys physical interaction in
+    golang.org/x/crypto/ssh
+  More info: https://pkg.go.dev/vuln/GO-2026-5019
+  Module: golang.org/x/crypto
+    Found in: golang.org/x/crypto@v0.37.0
+    Fixed in: golang.org/x/crypto@v0.52.0
+    Example traces found:
+      #1: cmd/sftp-server.go:519:25: cmd.startSFTPServer calls sftp.Server.Listen, which eventually calls ssh.NewServerConn
+
+Vulnerability #34: GO-2026-5018
+    Invoking pathological RSA/DSA parameters may cause DoS in
+    golang.org/x/crypto/ssh
+  More info: https://pkg.go.dev/vuln/GO-2026-5018
+  Module: golang.org/x/crypto
+    Found in: golang.org/x/crypto@v0.37.0
+    Fixed in: golang.org/x/crypto@v0.52.0
+    Example traces found:
+      #1: cmd/sftp-server.go:519:25: cmd.startSFTPServer calls sftp.Server.Listen, which eventually calls ssh.NewServerConn
+      #2: cmd/sftp-server.go:469:67: cmd.startSFTPServer calls ssh.ParseAuthorizedKey
+      #3: cmd/sftp-server.go:458:37: cmd.startSFTPServer calls ssh.ParsePrivateKey
+
+Vulnerability #35: GO-2026-5017
+    Invoking client can cause server deadlock on unexpected responses in
+    golang.org/x/crypto/ssh
+  More info: https://pkg.go.dev/vuln/GO-2026-5017
+  Module: golang.org/x/crypto
+    Found in: golang.org/x/crypto@v0.37.0
+    Fixed in: golang.org/x/crypto@v0.52.0
+    Example traces found:
+      #1: cmd/sftp-server.go:519:25: cmd.startSFTPServer calls sftp.Server.Listen, which eventually calls ssh.NewServerConn
+
+Vulnerability #36: GO-2026-5015
+    Invoking server panic during CheckHostKey/Authenticate in
+    golang.org/x/crypto/ssh
+  More info: https://pkg.go.dev/vuln/GO-2026-5015
+  Module: golang.org/x/crypto
+    Found in: golang.org/x/crypto@v0.37.0
+    Fixed in: golang.org/x/crypto@v0.52.0
+    Example traces found:
+      #1: cmd/sftp-server.go:346:31: cmd.validateClientKeyIsTrusted calls ssh.CertChecker.Authenticate
+
+Vulnerability #37: GO-2026-5014
+    Invoking bypass of certificate restrictions in golang.org/x/crypto/ssh
+  More info: https://pkg.go.dev/vuln/GO-2026-5014
+  Module: golang.org/x/crypto
+    Found in: golang.org/x/crypto@v0.37.0
+    Fixed in: golang.org/x/crypto@v0.52.0
+    Example traces found:
+      #1: cmd/sftp-server.go:519:25: cmd.startSFTPServer calls sftp.Server.Listen, which eventually calls ssh.NewServerConn
+
+Vulnerability #38: GO-2026-5013
+    Invoking byte arithmetic causes underflow and panic in
+    golang.org/x/crypto/ssh
+  More info: https://pkg.go.dev/vuln/GO-2026-5013
+  Module: golang.org/x/crypto
+    Found in: golang.org/x/crypto@v0.37.0
+    Fixed in: golang.org/x/crypto@v0.52.0
+    Example traces found:
+      #1: cmd/sftp-server.go:519:25: cmd.startSFTPServer calls sftp.Server.Listen, which eventually calls ssh.NewServerConn
+
+Vulnerability #39: GO-2026-4982
+    Bypass of meta content URL escaping causes XSS in html/template
+  More info: https://pkg.go.dev/vuln/GO-2026-4982
+  Standard library
+    Found in: html/template@go1.24.13
+    Fixed in: html/template@go1.25.10
+    Example traces found:
+      #1: cmd/metrics-v3-handler.go:250:33: cmd.metricsV3Server.ServeHTTP calls http.HandlerFunc.ServeHTTP, which eventually calls template.Template.Execute
+      #2: cmd/metrics-v3-handler.go:250:33: cmd.metricsV3Server.ServeHTTP calls http.HandlerFunc.ServeHTTP, which eventually calls template.Template.ExecuteTemplate
+
+Vulnerability #40: GO-2026-4980
+    Escaper bypass leads to XSS in html/template
+  More info: https://pkg.go.dev/vuln/GO-2026-4980
+  Standard library
+    Found in: html/template@go1.24.13
+    Fixed in: html/template@go1.25.10
+    Example traces found:
+      #1: cmd/metrics-v3-handler.go:250:33: cmd.metricsV3Server.ServeHTTP calls http.HandlerFunc.ServeHTTP, which eventually calls template.Template.Execute
+      #2: cmd/metrics-v3-handler.go:250:33: cmd.metricsV3Server.ServeHTTP calls http.HandlerFunc.ServeHTTP, which eventually calls template.Template.ExecuteTemplate
+
+Vulnerability #41: GO-2026-4976
+    ReverseProxy forwards queries with more than urlmaxqueryparams parameters in
+    net/http/httputil
+  More info: https://pkg.go.dev/vuln/GO-2026-4976
+  Standard library
+    Found in: net/http/httputil@go1.24.13
+    Fixed in: net/http/httputil@go1.25.10
+    Example traces found:
+      #1: internal/handlers/forwarder.go:105:20: handlers.Forwarder.ServeHTTP calls httputil.ReverseProxy.ServeHTTP
+
+Vulnerability #42: GO-2026-4971
+    Panic in Dial and LookupPort when handling NUL byte on Windows in net
+  More info: https://pkg.go.dev/vuln/GO-2026-4971
+  Standard library
+    Found in: net@go1.24.13
+    Fixed in: net@go1.25.10
+    Example traces found:
+      #1: internal/event/target/mqtt.go:254:32: target.MQTTTarget.initMQTT calls paho.client.Connect, which eventually calls net.Dial
+      #2: internal/event/target/webhook.go:134:30: target.WebhookTarget.isActive calls net.DialTimeout
+      #3: internal/event/target/nsq.go:137:32: target.NSQTarget.isActive calls nsq.Producer.Ping, which eventually calls net.Dialer.Dial
+      #4: cmd/object-api-utils.go:518:29: cmd.getHostFromSrv calls net.Dialer.DialContext
+      #5: internal/grid/debug.go:147:23: grid.getHosts calls net.Listen
+      #6: internal/http/check_port_linux.go:50:21: http.CheckPortAvailability calls net.ListenConfig.Listen
+      #7: cmd/site-replication.go:558:29: cmd.SiteReplicationSys.AddPeerClusters calls madmin.AdminClient.SRPeerJoin, which eventually calls net.LookupHost
+      #8: cmd/server-main.go:1020:47: cmd.serverMain calls api.Server.Serve, which eventually calls net.LookupIP
+      #9: cmd/iam.go:1729:42: cmd.IAMSys.NormalizeLDAPMappingImport calls ldap.Config.Connect, which calls net.LookupSRV
+      #10: cmd/common-main.go:467:30: cmd.handleCommonArgs calls net.GetFreePort, which calls net.ResolveTCPAddr
+      #11: internal/bucket/object/lock/lock.go:151:17: lock.UTCNowNTP calls ntp.Time, which eventually calls net.ResolveUDPAddr
+      #12: internal/logger/target/kafka/kafka.go:288:33: kafka.Target.init calls sarama.NewClient, which eventually calls net.Resolver.LookupAddr
+      #13: internal/logger/target/kafka/kafka.go:288:33: kafka.Target.init calls sarama.NewClient, which eventually calls net.Resolver.LookupHost
+      #14: cmd/iam-store.go:2980:31: cmd.IAMStoreSys.LoadUser calls singleflight.Group.Do, which eventually calls net.Resolver.LookupIP
+      #15: cmd/object-api-utils.go:1007:11: cmd.GetObjectReader.Close calls sync.Once.Do, which eventually calls net.Resolver.LookupSRV
+      #16: cmd/object-api-utils.go:1007:11: cmd.GetObjectReader.Close calls sync.Once.Do, which eventually calls net.Resolver.LookupTXT
+
+Vulnerability #43: GO-2026-4947
+    Unexpected work during chain building in crypto/x509
+  More info: https://pkg.go.dev/vuln/GO-2026-4947
+  Standard library
+    Found in: crypto/x509@go1.24.13
+    Fixed in: crypto/x509@go1.25.9
+    Example traces found:
+      #1: cmd/sts-handlers.go:858:31: cmd.stsAPIHandlers.AssumeRoleWithCertificate calls x509.Certificate.Verify
+
+Vulnerability #44: GO-2026-4946
+    Inefficient policy validation in crypto/x509
+  More info: https://pkg.go.dev/vuln/GO-2026-4946
+  Standard library
+    Found in: crypto/x509@go1.24.13
+    Fixed in: crypto/x509@go1.25.9
+    Example traces found:
+      #1: cmd/sts-handlers.go:858:31: cmd.stsAPIHandlers.AssumeRoleWithCertificate calls x509.Certificate.Verify
+
+Vulnerability #45: GO-2026-4945
+    Go JOSE Panics in JWE decryption in github.com/go-jose/go-jose
+  More info: https://pkg.go.dev/vuln/GO-2026-4945
+  Module: github.com/go-jose/go-jose/v4
+    Found in: github.com/go-jose/go-jose/v4@v4.1.0
+    Fixed in: github.com/go-jose/go-jose/v4@v4.1.4
+    Example traces found:
+      #1: cmd/utils.go:45:2: cmd.init calls oidc.init, which calls jose.init
+
+Vulnerability #46: GO-2026-4918
+    Infinite loop in HTTP/2 transport when given bad SETTINGS_MAX_FRAME_SIZE in
+    net/http/internal/http2 in golang.org/x/net
+  More info: https://pkg.go.dev/vuln/GO-2026-4918
+  Module: golang.org/x/net
+    Found in: golang.org/x/net@v0.39.0
+    Fixed in: golang.org/x/net@v0.53.0
+    Example traces found:
+      #1: internal/http/transports.go:196:23: http.uaTransport.RoundTrip calls http.Transport.RoundTrip, which eventually calls http2.Transport.NewClientConn
+      #2: internal/http/transports.go:196:23: http.uaTransport.RoundTrip calls http.Transport.RoundTrip, which eventually calls http2.Transport.RoundTrip
+      #3: internal/http/transports.go:196:23: http.uaTransport.RoundTrip calls http.Transport.RoundTrip, which eventually calls http2.noDialH2RoundTripper.RoundTrip
+      #4: internal/http/transports.go:196:23: http.uaTransport.RoundTrip calls http.Transport.RoundTrip, which eventually calls http2.unencryptedTransport.RoundTrip
+
+  Standard library
+    Found in: net/http@go1.24.13
+    Fixed in: net/http@go1.25.10
+    Example traces found:
+      #1: cmd/site-replication.go:3998:37: cmd.SiteReplicationSys.EditPeerCluster calls madmin.AdminClient.ServerInfo, which eventually calls http.Client.CloseIdleConnections
+      #2: cmd/utils.go:1061:23: cmd.MockOpenIDTestUserInteraction calls http.Client.Do
+      #3: internal/config/identity/openid/jwt.go:89:25: openid.Config.PopulatePublicKey calls http.Client.Get
+      #4: cmd/metrics-v3-handler.go:250:33: cmd.metricsV3Server.ServeHTTP calls http.HandlerFunc.ServeHTTP, which eventually calls http.Client.PostForm
+      #5: internal/rest/client.go:245:42: rest.Client.dumpHTTP calls httputil.DumpRequestOut, which calls http.Transport.CloseIdleConnections
+      #6: internal/http/transports.go:196:23: http.uaTransport.RoundTrip calls http.Transport.RoundTrip
+
+Vulnerability #47: GO-2026-4870
+    Unauthenticated TLS 1.3 KeyUpdate record can cause persistent connection
+    retention and DoS in crypto/tls
+  More info: https://pkg.go.dev/vuln/GO-2026-4870
+  Standard library
+    Found in: crypto/tls@go1.24.13
+    Fixed in: crypto/tls@go1.25.9
+    Example traces found:
+      #1: cmd/iam.go:1729:42: cmd.IAMSys.NormalizeLDAPMappingImport calls ldap.Config.Connect, which eventually calls tls.Conn.Handshake
+      #2: internal/grid/debug.go:164:14: grid.startHTTPServer calls httptest.Server.Start, which eventually calls tls.Conn.HandshakeContext
+      #3: internal/s3select/select.go:761:24: s3select.ObjectReadSeekCloser.Read calls http.readWriteCloserBody.Read, which calls tls.Conn.Read
+      #4: cmd/admin-handlers.go:3403:13: cmd.adminAPIHandlers.InspectDataHandler calls fmt.Fprintf, which calls tls.Conn.Write
+      #5: internal/http/transports.go:196:23: http.uaTransport.RoundTrip calls http.Transport.RoundTrip, which eventually calls tls.Dial
+      #6: cmd/iam.go:1729:42: cmd.IAMSys.NormalizeLDAPMappingImport calls ldap.Config.Connect, which eventually calls tls.DialWithDialer
+      #7: internal/http/transports.go:196:23: http.uaTransport.RoundTrip calls http.Transport.RoundTrip, which eventually calls tls.Dialer.DialContext
+
+Vulnerability #48: GO-2026-4869
+    Unbounded allocation for old GNU sparse in archive/tar
+  More info: https://pkg.go.dev/vuln/GO-2026-4869
+  Standard library
+    Found in: archive/tar@go1.24.13
+    Fixed in: archive/tar@go1.25.9
+    Example traces found:
+      #1: cmd/untar.go:184:32: cmd.untar calls tar.Reader.Next
+
+Vulnerability #49: GO-2026-4865
+    JsBraceDepth Context Tracking Bugs (XSS) in html/template
+  More info: https://pkg.go.dev/vuln/GO-2026-4865
+  Standard library
+    Found in: html/template@go1.24.13
+    Fixed in: html/template@go1.25.9
+    Example traces found:
+      #1: cmd/object-handlers.go:3448:33: cmd.objectAPIHandlers.PostRestoreObjectHandler calls template.Error.Error
+      #2: cmd/metrics-v3-handler.go:250:33: cmd.metricsV3Server.ServeHTTP calls http.HandlerFunc.ServeHTTP, which eventually calls template.Template.Execute
+      #3: cmd/metrics-v3-handler.go:250:33: cmd.metricsV3Server.ServeHTTP calls http.HandlerFunc.ServeHTTP, which eventually calls template.Template.ExecuteTemplate
+      #4: cmd/object-api-utils.go:1007:11: cmd.GetObjectReader.Close calls sync.Once.Do, which eventually calls template.Template.Funcs
+      #5: cmd/object-api-utils.go:1007:11: cmd.GetObjectReader.Close calls sync.Once.Do, which eventually calls template.Template.Parse
+      #6: internal/logger/target/console/console.go:63:15: console.Target.Send calls fmt.Fprintln, which eventually calls template.context.String
+
+Vulnerability #50: GO-2026-4603
+    URLs in meta content attribute actions are not escaped in html/template
+  More info: https://pkg.go.dev/vuln/GO-2026-4603
+  Standard library
+    Found in: html/template@go1.24.13
+    Fixed in: html/template@go1.25.8
+    Example traces found:
+      #1: cmd/metrics-v3-handler.go:250:33: cmd.metricsV3Server.ServeHTTP calls http.HandlerFunc.ServeHTTP, which eventually calls template.Template.Execute
+      #2: cmd/metrics-v3-handler.go:250:33: cmd.metricsV3Server.ServeHTTP calls http.HandlerFunc.ServeHTTP, which eventually calls template.Template.ExecuteTemplate
+
+Vulnerability #51: GO-2026-4602
+    FileInfo can escape from a Root in os
+  More info: https://pkg.go.dev/vuln/GO-2026-4602
+  Standard library
+    Found in: os@go1.24.13
+    Fixed in: os@go1.25.8
+    Example traces found:
+      #1: cmd/peer-rest-server.go:407:28: cmd.peerRESTServer.GetProcInfoHandler calls madmin.GetProcInfo, which eventually calls os.File.ReadDir
+      #2: cmd/main.go:225:31: cmd.Main calls cli.App.Run, which eventually calls os.File.Readdir
+      #3: internal/kms/config.go:142:35: kms.Connect calls certs.GetRootCAs, which eventually calls os.ReadDir
+
+Vulnerability #52: GO-2026-4601
+    Incorrect parsing of IPv6 host literals in net/url
+  More info: https://pkg.go.dev/vuln/GO-2026-4601
+  Standard library
+    Found in: net/url@go1.24.13
+    Fixed in: net/url@go1.25.8
+    Example traces found:
+      #1: internal/kms/kms.go:369:35: kms.kmsConn.GenerateKey calls kms.Client.GenerateKey, which eventually calls url.JoinPath
+      #2: cmd/site-replication.go:2538:22: cmd.SiteReplicationSys.RemoveRemoteTargetsForEndpoint calls url.Parse
+      #3: internal/handlers/forwarder.go:124:40: handlers.Forwarder.getURLFromRequest calls url.ParseRequestURI
+      #4: cmd/utils.go:1061:23: cmd.MockOpenIDTestUserInteraction calls http.Client.Do, which eventually calls url.URL.Parse
+
+Vulnerability #53: GO-2026-4394
+    OpenTelemetry Go SDK Vulnerable to Arbitrary Code Execution via PATH
+    Hijacking in go.opentelemetry.io/otel/sdk
+  More info: https://pkg.go.dev/vuln/GO-2026-4394
+  Module: go.opentelemetry.io/otel/sdk
+    Found in: go.opentelemetry.io/otel/sdk@v1.35.0
+    Fixed in: go.opentelemetry.io/otel/sdk@v1.40.0
+    Example traces found:
+      #1: cmd/warm-backend-gcs.go:26:2: cmd.init calls storage.init, which eventually calls instrumentation.init
+      #2: cmd/warm-backend-gcs.go:26:2: cmd.init calls storage.init, which calls resource.init
+      #3: cmd/warm-backend-gcs.go:26:2: cmd.init calls storage.init, which eventually calls sdk.init
+      #4: cmd/warm-backend-gcs.go:26:2: cmd.init calls storage.init, which eventually calls x.init
+
+Vulnerability #54: GO-2025-4173
+    Eclipse Paho Go MQTT may incorrectly encode strings if length exceeds 65535
+    bytes in github.com/eclipse/paho.mqtt.golang
+  More info: https://pkg.go.dev/vuln/GO-2025-4173
+  Module: github.com/eclipse/paho.mqtt.golang
+    Found in: github.com/eclipse/paho.mqtt.golang@v1.5.0
+    Fixed in: github.com/eclipse/paho.mqtt.golang@v1.5.1
+    Example traces found:
+      #1: internal/event/target/mqtt.go:254:32: target.MQTTTarget.initMQTT calls paho.client.Connect, which eventually calls packets.ConnackPacket.Details
+      #2: internal/logger/target/console/console.go:63:15: console.Target.Send calls fmt.Fprintln, which eventually calls packets.ConnackPacket.String
+      #3: internal/event/target/mqtt.go:254:32: target.MQTTTarget.initMQTT calls paho.client.Connect, which eventually calls packets.ConnackPacket.Write
+      #4: internal/event/target/mqtt.go:254:32: target.MQTTTarget.initMQTT calls paho.client.Connect, which eventually calls packets.ConnectPacket.Details
+      #5: internal/logger/target/console/console.go:63:15: console.Target.Send calls fmt.Fprintln, which eventually calls packets.ConnectPacket.String
+      #6: internal/event/target/mqtt.go:254:32: target.MQTTTarget.initMQTT calls paho.client.Connect, which eventually calls packets.ConnectPacket.Write
+      #7: internal/event/target/mqtt.go:254:32: target.MQTTTarget.initMQTT calls paho.client.Connect, which eventually calls packets.DisconnectPacket.Details
+      #8: internal/logger/target/console/console.go:63:15: console.Target.Send calls fmt.Fprintln, which eventually calls packets.DisconnectPacket.String
+      #9: internal/event/target/mqtt.go:254:32: target.MQTTTarget.initMQTT calls paho.client.Connect, which eventually calls packets.DisconnectPacket.Write
+      #10: internal/logger/target/console/console.go:63:15: console.Target.Send calls fmt.Fprintln, which eventually calls packets.FixedHeader.String
+      #11: internal/event/target/mqtt.go:164:32: target.MQTTTarget.send calls paho.client.Publish, which calls packets.NewControlPacket
+      #12: internal/event/target/mqtt.go:254:32: target.MQTTTarget.initMQTT calls paho.client.Connect, which eventually calls packets.PingreqPacket.Details
+      #13: internal/logger/target/console/console.go:63:15: console.Target.Send calls fmt.Fprintln, which eventually calls packets.PingreqPacket.String
+      #14: internal/event/target/mqtt.go:254:32: target.MQTTTarget.initMQTT calls paho.client.Connect, which eventually calls packets.PingreqPacket.Write
+      #15: internal/event/target/mqtt.go:254:32: target.MQTTTarget.initMQTT calls paho.client.Connect, which eventually calls packets.PingrespPacket.Details
+      #16: internal/logger/target/console/console.go:63:15: console.Target.Send calls fmt.Fprintln, which eventually calls packets.PingrespPacket.String
+      #17: internal/event/target/mqtt.go:254:32: target.MQTTTarget.initMQTT calls paho.client.Connect, which eventually calls packets.PingrespPacket.Write
+      #18: internal/event/target/mqtt.go:164:32: target.MQTTTarget.send calls paho.client.Publish, which eventually calls packets.PubackPacket.Details
+      #19: internal/logger/target/console/console.go:63:15: console.Target.Send calls fmt.Fprintln, which eventually calls packets.PubackPacket.String
+      #20: internal/event/target/mqtt.go:254:32: target.MQTTTarget.initMQTT calls paho.client.Connect, which eventually calls packets.PubackPacket.Write
+      #21: internal/event/target/mqtt.go:164:32: target.MQTTTarget.send calls paho.client.Publish, which eventually calls packets.PubcompPacket.Details
+      #22: internal/logger/target/console/console.go:63:15: console.Target.Send calls fmt.Fprintln, which eventually calls packets.PubcompPacket.String
+      #23: internal/event/target/mqtt.go:254:32: target.MQTTTarget.initMQTT calls paho.client.Connect, which eventually calls packets.PubcompPacket.Write
+      #24: internal/event/target/mqtt.go:164:32: target.MQTTTarget.send calls paho.client.Publish, which eventually calls packets.PublishPacket.Details
+      #25: internal/logger/target/console/console.go:63:15: console.Target.Send calls fmt.Fprintln, which eventually calls packets.PublishPacket.String
+      #26: internal/event/target/mqtt.go:254:32: target.MQTTTarget.initMQTT calls paho.client.Connect, which eventually calls packets.PublishPacket.Write
+      #27: internal/event/target/mqtt.go:254:32: target.MQTTTarget.initMQTT calls paho.client.Connect, which eventually calls packets.PubrecPacket.Details
+      #28: internal/logger/target/console/console.go:63:15: console.Target.Send calls fmt.Fprintln, which eventually calls packets.PubrecPacket.String
+      #29: internal/event/target/mqtt.go:254:32: target.MQTTTarget.initMQTT calls paho.client.Connect, which eventually calls packets.PubrecPacket.Write
+      #30: internal/event/target/mqtt.go:254:32: target.MQTTTarget.initMQTT calls paho.client.Connect, which eventually calls packets.PubrelPacket.Details
+      #31: internal/logger/target/console/console.go:63:15: console.Target.Send calls fmt.Fprintln, which eventually calls packets.PubrelPacket.String
+      #32: internal/event/target/mqtt.go:254:32: target.MQTTTarget.initMQTT calls paho.client.Connect, which eventually calls packets.PubrelPacket.Write
+      #33: internal/event/target/mqtt.go:254:32: target.MQTTTarget.initMQTT calls paho.client.Connect, which eventually calls packets.ReadPacket
+      #34: internal/event/target/mqtt.go:254:32: target.MQTTTarget.initMQTT calls paho.client.Connect, which eventually calls packets.SubackPacket.Details
+      #35: internal/logger/target/console/console.go:63:15: console.Target.Send calls fmt.Fprintln, which eventually calls packets.SubackPacket.String
+      #36: internal/event/target/mqtt.go:254:32: target.MQTTTarget.initMQTT calls paho.client.Connect, which eventually calls packets.SubackPacket.Write
+      #37: internal/event/target/mqtt.go:254:32: target.MQTTTarget.initMQTT calls paho.client.Connect, which eventually calls packets.SubscribePacket.Details
+      #38: internal/logger/target/console/console.go:63:15: console.Target.Send calls fmt.Fprintln, which eventually calls packets.SubscribePacket.String
+      #39: internal/event/target/mqtt.go:254:32: target.MQTTTarget.initMQTT calls paho.client.Connect, which eventually calls packets.SubscribePacket.Write
+      #40: internal/event/target/mqtt.go:254:32: target.MQTTTarget.initMQTT calls paho.client.Connect, which eventually calls packets.UnsubackPacket.Details
+      #41: internal/logger/target/console/console.go:63:15: console.Target.Send calls fmt.Fprintln, which eventually calls packets.UnsubackPacket.String
+      #42: internal/event/target/mqtt.go:254:32: target.MQTTTarget.initMQTT calls paho.client.Connect, which eventually calls packets.UnsubackPacket.Write
+      #43: internal/event/target/mqtt.go:254:32: target.MQTTTarget.initMQTT calls paho.client.Connect, which eventually calls packets.UnsubscribePacket.Details
+      #44: internal/logger/target/console/console.go:63:15: console.Target.Send calls fmt.Fprintln, which eventually calls packets.UnsubscribePacket.String
+      #45: internal/event/target/mqtt.go:254:32: target.MQTTTarget.initMQTT calls paho.client.Connect, which eventually calls packets.UnsubscribePacket.Write
+      #46: internal/event/target/mqtt.go:31:2: target.init calls paho.init, which calls packets.init
+      #47: internal/event/target/mqtt.go:250:12: target.MQTTTarget.initMQTT calls paho.ClientOptions.AddBroker
+      #48: internal/event/target/mqtt.go:244:18: target.MQTTTarget.initMQTT calls paho.ClientOptions.SetCleanSession
+      #49: internal/event/target/mqtt.go:243:14: target.MQTTTarget.initMQTT calls paho.ClientOptions.SetClientID
+      #50: internal/event/target/mqtt.go:248:15: target.MQTTTarget.initMQTT calls paho.ClientOptions.SetKeepAlive
+      #51: internal/event/target/mqtt.go:247:26: target.MQTTTarget.initMQTT calls paho.ClientOptions.SetMaxReconnectInterval
+      #52: internal/event/target/mqtt.go:246:14: target.MQTTTarget.initMQTT calls paho.ClientOptions.SetPassword
+      #53: internal/event/target/mqtt.go:249:15: target.MQTTTarget.initMQTT calls paho.ClientOptions.SetTLSConfig
+      #54: internal/event/target/mqtt.go:245:14: target.MQTTTarget.initMQTT calls paho.ClientOptions.SetUsername
+      #55: internal/event/target/mqtt.go:252:32: target.MQTTTarget.initMQTT calls paho.NewClient
+      #56: internal/event/target/mqtt.go:242:34: target.MQTTTarget.initMQTT calls paho.NewClientOptions
+      #57: cmd/object-api-utils.go:1007:11: cmd.GetObjectReader.Close calls sync.Once.Do, which eventually calls paho.ackFunc
+      #58: internal/event/target/mqtt.go:168:20: target.MQTTTarget.send calls paho.baseToken.Error
+      #59: internal/event/target/mqtt.go:165:23: target.MQTTTarget.send calls paho.baseToken.WaitTimeout
+      #60: internal/event/target/mqtt.go:254:32: target.MQTTTarget.initMQTT calls paho.client.Connect
+      #61: internal/event/target/mqtt.go:224:27: target.MQTTTarget.Close calls paho.client.Disconnect
+      #62: internal/event/target/mqtt.go:145:36: target.MQTTTarget.isActive calls paho.client.IsConnectionOpen
+      #63: internal/event/target/mqtt.go:164:32: target.MQTTTarget.send calls paho.client.Publish
+      #64: internal/event/target/mqtt.go:31:2: target.init calls paho.init
+      #65: cmd/xl-storage.go:1936:25: cmd.xlStorage.ReadFile calls io.ReadFull, which eventually calls paho.websocketConnector.Read
+      #66: internal/ioutil/ioutil.go:317:22: ioutil.Copy calls io.CopyBuffer, which eventually calls paho.websocketConnector.Write
+
+Vulnerability #55: GO-2025-4134
+    Unbounded memory consumption in golang.org/x/crypto/ssh
+  More info: https://pkg.go.dev/vuln/GO-2025-4134
+  Module: golang.org/x/crypto
+    Found in: golang.org/x/crypto@v0.37.0
+    Fixed in: golang.org/x/crypto@v0.45.0
+    Example traces found:
+      #1: cmd/sftp-server.go:519:25: cmd.startSFTPServer calls sftp.Server.Listen, which eventually calls ssh.NewServerConn
+
+Your code is affected by 55 vulnerabilities from 8 modules and the Go standard library.
+This scan also found 15 vulnerabilities in packages you import and 19
+vulnerabilities in modules you require, but your code doesn't appear to call
+these vulnerabilities.
+Use '-show verbose' for more details.
+EXIT:True
