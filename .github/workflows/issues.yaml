@@ -2,6 +2,9 @@
 
 name: Issue Workflow
 
+permissions:
+  contents: read
+
 on:
   issues:
     types:
