@@ -6,7 +6,7 @@ MinIO is a High Performance Object Storage released under GNU Affero General Pub
 
 | SECURITY NOTICE |
 | --------------- |
-| This chart belongs to the **security-hardened community fork** of MinIO. The default `image.tag` (`RELEASE.2024-12-18T13-15-44Z`) is the final legacy upstream binary release and **does not include the October 2026 security fixes** (55 patched vulnerabilities, Go 1.26 toolchain, hardened CORS). Before deploying, [build your own Docker image from this repository's source](../../README.md#build-docker-image) and set `image.repository` / `image.tag` to it. The chart sets `MINIO_UPDATE=off` so the server never self-updates to an unpatched legacy binary — update by replacing the image instead. |
+| This chart belongs to the **security-hardened community fork** of MinIO. The default image (`ghcr.io/cbuntingde/minio:master`) is built from this fork's source by the `Publish Container Image` workflow and includes the October 2026 security fixes. The chart also sets `MINIO_UPDATE=off` so the server never self-updates to an unpatched legacy binary from `dl.min.io` — update by pulling a newer image instead. Do not override the image with legacy `RELEASE.*` tags or `quay.io/minio/*` images; those are frozen and unpatched. |
 
 | IMPORTANT |
 | -------------------------- |

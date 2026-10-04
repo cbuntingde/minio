@@ -12,15 +12,17 @@ clusterDomain: cluster.local
 
 ## Set default image, imageTag, and imagePullPolicy. mode is used to indicate the
 ##
-## SECURITY WARNING: The default image tag below is the final legacy upstream
-## release (December 2024). It predates the October 2026 security audit fixes
-## in this repository and is NOT patched. Build your own image from this
-## source tree (see the repository README, section "Build Docker Image") and
-## set `image.repository` and `image.tag` to your patched image before
-## deploying.
+## The default image is built from this fork's source by the
+## ".github/workflows/publish-image.yml" workflow and published to GHCR
+## (see https://github.com/cbuntingde/minio). The `master` tag tracks the
+## fork's main branch and contains the security fixes documented in
+## ../docs/security.md.
+##
+## Do NOT point this at legacy upstream tags (RELEASE.*) or quay.io/minio/*
+## images: those are frozen binaries that do not contain this fork's fixes.
 image:
-  repository: quay.io/minio/minio
-  tag: RELEASE.2024-12-18T13-15-44Z
+  repository: ghcr.io/cbuntingde/minio
+  tag: master
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []

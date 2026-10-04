@@ -145,15 +145,30 @@ export MINIO_ROOT_PASSWORD=my-secret-key
 minio server /tmp/minio
 ```
 
-## Build Docker Image
+## Docker
 
-First [build MinIO from source](#install-from-source) and ensure the `minio`
-binary exists in the project root, then:
+Pre-built multi-arch images (linux/amd64, linux/arm64) are published to GitHub
+Container Registry by the `Publish Container Image` workflow. The `master` tag
+tracks this branch; version tags produce `:<tag>` and `:latest`:
 
 ```sh
-docker build -t myminio:minio .
+docker run -p 9000:9000 \
+  -e MINIO_ROOT_USER=myadmin -e MINIO_ROOT_PASSWORD=my-secret-key \
+  ghcr.io/cbuntingde/minio:master server /tmp/minio
+```
+
+To build the image yourself from source:
+
+```sh
+docker build -f Dockerfile.source -t myminio:minio .
 docker run -p 9000:9000 myminio:minio server /tmp/minio
 ```
+
+> [!IMPORTANT]
+> The legacy `Dockerfile`, `Dockerfile.release`, `Dockerfile.release.old_cpu` and
+> `Dockerfile.hotfix` do **not** build from source — they download the frozen
+> upstream binary from `dl.min.io`. Use `Dockerfile.source` to get this fork's
+> security fixes.
 
 ## Install using Helm Charts
 

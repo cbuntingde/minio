@@ -40,14 +40,32 @@ minio server /tmp/minio
 
 ## Docker
 
-Build the image locally (the `Dockerfile` packages a locally built binary, so
-build the binary first):
+Pre-built multi-arch images (linux/amd64, linux/arm64) are published to GitHub
+Container Registry by the
+[`Publish Container Image`](../.github/workflows/publish-image.yml) workflow:
 
 ```sh
-go build
-docker build -t myminio:minio .
+docker run -p 9000:9000 \
+  -e MINIO_ROOT_USER=myadmin -e MINIO_ROOT_PASSWORD=my-secret-key \
+  ghcr.io/cbuntingde/minio:master server /tmp/minio
+```
+
+Tags: `:master` tracks the fork's main branch; pushing a version tag builds
+`:<tag>` and `:latest`.
+
+To build the image from source yourself (the multi-stage
+[`Dockerfile.source`](../Dockerfile.source)):
+
+```sh
+docker build -f Dockerfile.source -t myminio:minio .
 docker run -p 9000:9000 myminio:minio server /tmp/minio
 ```
+
+> [!IMPORTANT]
+> The legacy `Dockerfile`, `Dockerfile.release`, `Dockerfile.release.old_cpu`
+> and `Dockerfile.hotfix` do **not** build from source — they download the
+> frozen upstream binary from `dl.min.io` and therefore do not contain this
+> fork's security fixes. Use `Dockerfile.source`.
 
 ## Helm / Kubernetes
 
