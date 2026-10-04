@@ -164,6 +164,11 @@ docker build -f Dockerfile.source -t myminio:minio .
 docker run -p 9000:9000 myminio:minio server /tmp/minio
 ```
 
+> [!NOTE]
+> Publishing to GHCR requires the package to be linked to this repository. If the
+> publish workflow fails with `permission_denied: write_package`, see
+> [Publishing images to GHCR](docs/deploy.md#publishing-images-to-ghcr).
+
 > [!IMPORTANT]
 > The legacy `Dockerfile`, `Dockerfile.release`, `Dockerfile.release.old_cpu` and
 > `Dockerfile.hotfix` do **not** build from source — they download the frozen

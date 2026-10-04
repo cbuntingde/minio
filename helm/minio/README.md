@@ -6,7 +6,7 @@ MinIO is a High Performance Object Storage released under GNU Affero General Pub
 
 | SECURITY NOTICE |
 | --------------- |
-| This chart belongs to the **security-hardened community fork** of MinIO. The default image (`ghcr.io/cbuntingde/minio:master`) is built from this fork's source by the `Publish Container Image` workflow and includes the October 2026 security fixes. The chart also sets `MINIO_UPDATE=off` so the server never self-updates to an unpatched legacy binary from `dl.min.io` — update by pulling a newer image instead. Do not override the image with legacy `RELEASE.*` tags or `quay.io/minio/*` images; those are frozen and unpatched. |
+| This chart belongs to the **security-hardened community fork** of MinIO. The default image (`ghcr.io/cbuntingde/minio:master`) is built from this fork's source by the `Publish Container Image` workflow. If that workflow has not published yet, build the image yourself with `Dockerfile.source` and set `image.repository`/`image.tag` accordingly — see [`docs/deploy.md`](https://github.com/cbuntingde/minio/blob/master/docs/deploy.md#docker) for the required GHCR access grant. The chart also sets `MINIO_UPDATE=off` so the server never self-updates to an unpatched legacy binary from `dl.min.io` — update by pulling a newer image instead. Do not override the image with legacy `RELEASE.*` tags or `quay.io/minio/*` images; those are frozen and unpatched. |
 
 | IMPORTANT |
 | -------------------------- |

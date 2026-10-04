@@ -23,9 +23,67 @@ permissions:
   packages: write
 
 jobs:
+  preflight:
+    name: Verify GHCR push access
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      # GHCR only grants an Actions token push access to a package that is
+      # linked to this repository, and the link is created by the first publish
+      # *from* a repository. If ghcr.io/<owner>/<repo> already exists from an
+      # earlier, differently-credited push, GITHUB_TOKEN is refused with
+      # "denied: permission_denied: write_package". GHCR never grants push for
+      # an unlinked package name (nor for names that match no repository), so
+      # check the grant up front and fail with the fix in seconds instead of
+      # after a full build.
+      - name: Check the registry grant for ${{ github.repository }}
+        env:
+          GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          token="${GHCR_TOKEN:-$GITHUB_TOKEN}"
+          scope="repository:${{ github.repository }}:pull,push"
+          code=$(curl -s -H "Authorization: Bearer $token" -o /tmp/grant.json -w '%{http_code}' \
+            "https://ghcr.io/token?service=ghcr.io&scope=$scope")
+          actions=$(jq -r '.token // empty' /tmp/grant.json | awk -F. '{print $2}' \
+            | tr '-_' '+/' \
+            | awk '{ l = length($0) % 4; if (l) $0 = $0 substr("====", 1, 4 - l); print }' \
+            | base64 -d 2>/dev/null | jq -r '[.access[]?.actions[]?] | join(",")' 2>/dev/null || true)
+          echo "ghcr.io scope '$scope': http=$code actions=${actions:-none}"
+          if [ "$code" = "200" ] && printf ',%s,' "$actions" | grep -q ',push,'; then
+            echo "push access confirmed"
+            exit 0
+          fi
+          echo "::error title=GHCR push denied::ghcr.io did not grant push access for ${{ github.repository }} (http=$code, actions=${actions:-none})."
+          {
+            echo "### GHCR push access denied"
+            echo
+            echo "ghcr.io did not grant push access for \`${{ github.repository }}\`"
+            echo "(http=\`$code\`, granted actions=\`${actions:-none}\`)."
+            echo
+            echo "**Cause**: \`ghcr.io/${{ github.repository }}\` already exists but is not"
+            echo "linked to this repository, so the Actions token has no write access to it."
+            echo "GHCR only grants push for a package that is linked to the pushing repository."
+            echo
+            echo "**Fix (pick one)**"
+            echo
+            echo "1. Grant this repository write access to the existing package:"
+            echo "   https://github.com/users/${{ github.repository_owner }}/packages/container/${{ github.event.repository.name }}/settings"
+            echo "   -> \`Manage Actions access\` -> \`Add Repository\` -> \`${{ github.repository }}\` -> Role: **Write**"
+            echo
+            echo "2. Publish with a personal access token that has the \`write:packages\` scope:"
+            echo "   store it as the repository secret \`GHCR_TOKEN\`; this workflow prefers that"
+            echo "   secret over \`GITHUB_TOKEN\`."
+            echo
+            echo "Registry response: \`$(tr -d '\n' < /tmp/grant.json)\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+          cat /tmp/grant.json
+          exit 1
+
   build:
     name: Build ${{ matrix.arch }}
     runs-on: ${{ matrix.runner }}
+    needs: [preflight]
     timeout-minutes: 60
     strategy:
       fail-fast: false
@@ -52,8 +110,10 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ github.repository_owner }}
+          # GHCR_TOKEN (a PAT with write:packages) takes precedence when set:
+          # see the preflight job for why GITHUB_TOKEN may be refused.
+          password: ${{ secrets.GHCR_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: Extract metadata (tags, labels) for the image
         id: meta
@@ -121,8 +181,8 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GHCR_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: Extract metadata (tags, labels) for the image
         id: meta
@@ -139,9 +199,18 @@ jobs:
       - name: Create the multi-arch manifest and push all tags
         working-directory: /tmp/digests
         run: |
-          docker buildx imagetools create \
-            $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
-            $(printf 'ghcr.io/${{ github.repository }}@sha256:%s ' *)
+          tag_args=()
+          while IFS= read -r tag; do
+            tag_args+=("-t" "$tag")
+          done < <(jq -r '.tags[]' <<< "$DOCKER_METADATA_OUTPUT_JSON")
+
+          digest_args=()
+          for digest in *; do
+            digest_args+=("ghcr.io/${{ github.repository }}@sha256:$digest")
+          done
+
+          printf 'creating manifest for: %s\n' "${digest_args[@]}"
+          docker buildx imagetools create "${tag_args[@]}" "${digest_args[@]}"
 
       - name: Inspect the published image
         run: |

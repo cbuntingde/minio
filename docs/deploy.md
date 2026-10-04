@@ -1,8 +1,9 @@
 # Deploying This Fork
 
-The fork is distributed **as source only** — there are no official pre-compiled
-binaries or container images. Building from source is the only supported
-distribution, which guarantees you get the patched toolchain and dependencies.
+This fork is distributed **as source**: there are no pre-compiled binaries, and
+the only container images that contain the fork's fixes are built from this
+source (see [Docker](#docker)). Building from source guarantees that you get the
+patched toolchain and dependencies.
 
 ## Upgrade policy
 
@@ -53,6 +54,30 @@ docker run -p 9000:9000 \
 Tags: `:master` tracks the fork's main branch; pushing a version tag builds
 `:<tag>` and `:latest`.
 
+### Publishing images to GHCR
+
+The publish workflow authenticates with the repository's `GITHUB_TOKEN`. GHCR
+only grants that token push access to a package that is **linked to this
+repository**, and only a first publish *from* this repository creates that link.
+If `ghcr.io/cbuntingde/minio` already exists from an earlier push made with
+different credentials, publishing fails with:
+
+```text
+ERROR: failed to push ghcr.io/cbuntingde/minio:master: denied: permission_denied: write_package
+```
+
+GHCR does not grant push for an unlinked package, and it also refuses package
+names that match no repository, so renaming the image does not help. The
+`Verify GHCR push access` job detects this before the build (`~5s` instead of
+after a full multi-arch build) and prints both fixes:
+
+1. Grant this repository write access to the existing package:
+   <https://github.com/users/cbuntingde/packages/container/minio/settings> →
+   *Manage Actions access* → *Add Repository* → `cbuntingde/minio` → Role **Write**.
+2. Or create a personal access token (classic) with the `write:packages` scope,
+   store it as the repository secret `GHCR_TOKEN`, and let the workflow use it —
+   the login steps prefer `GHCR_TOKEN` over `GITHUB_TOKEN`.
+
 To build the image from source yourself (the multi-stage
 [`Dockerfile.source`](../Dockerfile.source)):
 
@@ -72,11 +97,11 @@ docker run -p 9000:9000 myminio:minio server /tmp/minio
 The community chart is in [`helm/minio`](../helm/minio).
 
 > [!IMPORTANT]
-> The chart's default `image.tag` is the final legacy upstream binary release
-> (`RELEASE.2024-12-18T13-15-44Z`) and does **not** contain this fork's
-> security fixes. Build your own image (see above) and set `image.repository`
-> and `image.tag` to it before deploying. The chart sets `MINIO_UPDATE=off`
-> so the server never self-updates to an unpatched binary.
+> The chart's default image is `ghcr.io/cbuntingde/minio:master`, built from this
+> fork's source. Do not override `image.repository` / `image.tag` with legacy
+> `RELEASE.*` tags or `quay.io/minio/*` images: those are frozen upstream builds
+> without this fork's security fixes. The chart sets `MINIO_UPDATE=off` so the
+> server never self-updates to an unpatched binary.
 
 ## Verifying a deployment
 
