@@ -56,30 +56,30 @@ test-root-disable: install-race
 
 test-ilm: install-race
 	@echo "Running ILM tests"
-	@env bash $(PWD)/docs/bucket/replication/setup_ilm_expiry_replication.sh
+	@env bash $(PWD)/legacy-docs/bucket/replication/setup_ilm_expiry_replication.sh
 
 test-ilm-transition: install-race
 	@echo "Running ILM tiering tests with healing"
-	@env bash $(PWD)/docs/bucket/lifecycle/setup_ilm_transition.sh
+	@env bash $(PWD)/legacy-docs/bucket/lifecycle/setup_ilm_transition.sh
 
 test-pbac: install-race
 	@echo "Running bucket policies tests"
-	@env bash $(PWD)/docs/iam/policies/pbac-tests.sh
+	@env bash $(PWD)/legacy-docs/iam/policies/pbac-tests.sh
 
 test-decom: install-race
 	@echo "Running minio decom tests"
-	@env bash $(PWD)/docs/distributed/decom.sh
-	@env bash $(PWD)/docs/distributed/decom-encrypted.sh
-	@env bash $(PWD)/docs/distributed/decom-encrypted-sse-s3.sh
-	@env bash $(PWD)/docs/distributed/decom-compressed-sse-s3.sh
-	@env bash $(PWD)/docs/distributed/decom-encrypted-kes.sh
+	@env bash $(PWD)/legacy-docs/distributed/decom.sh
+	@env bash $(PWD)/legacy-docs/distributed/decom-encrypted.sh
+	@env bash $(PWD)/legacy-docs/distributed/decom-encrypted-sse-s3.sh
+	@env bash $(PWD)/legacy-docs/distributed/decom-compressed-sse-s3.sh
+	@env bash $(PWD)/legacy-docs/distributed/decom-encrypted-kes.sh
 
 test-versioning: install-race
 	@echo "Running minio versioning tests"
-	@env bash $(PWD)/docs/bucket/versioning/versioning-tests.sh
+	@env bash $(PWD)/legacy-docs/bucket/versioning/versioning-tests.sh
 
 test-configfile: install-race
-	@env bash $(PWD)/docs/distributed/distributed-from-config-file.sh
+	@env bash $(PWD)/legacy-docs/distributed/distributed-from-config-file.sh
 
 test-upgrade: install-race
 	@echo "Running minio upgrade tests"
@@ -101,47 +101,47 @@ test-iam-ldap-upgrade-import: install-race ## verify IAM (external LDAP IDP)
 
 test-iam-import-with-missing-entities: install-race ## test import of external iam config withg missing entities
 	@echo "Test IAM import configurations with missing entities"
-	@env bash $(PWD)/docs/distributed/iam-import-with-missing-entities.sh
+	@env bash $(PWD)/legacy-docs/distributed/iam-import-with-missing-entities.sh
 
 test-iam-import-with-openid: install-race
 	@echo "Test IAM import configurations with openid"
-	@env bash $(PWD)/docs/distributed/iam-import-with-openid.sh
+	@env bash $(PWD)/legacy-docs/distributed/iam-import-with-openid.sh
 
 test-sio-error:
-	@(env bash $(PWD)/docs/bucket/replication/sio-error.sh)
+	@(env bash $(PWD)/legacy-docs/bucket/replication/sio-error.sh)
 
 test-replication-2site:
-	@(env bash $(PWD)/docs/bucket/replication/setup_2site_existing_replication.sh)
+	@(env bash $(PWD)/legacy-docs/bucket/replication/setup_2site_existing_replication.sh)
 
 test-replication-3site:
-	@(env bash $(PWD)/docs/bucket/replication/setup_3site_replication.sh)
+	@(env bash $(PWD)/legacy-docs/bucket/replication/setup_3site_replication.sh)
 
 test-delete-replication:
-	@(env bash $(PWD)/docs/bucket/replication/delete-replication.sh)
+	@(env bash $(PWD)/legacy-docs/bucket/replication/delete-replication.sh)
 
 test-delete-marker-proxying:
-	@(env bash $(PWD)/docs/bucket/replication/test_del_marker_proxying.sh)
+	@(env bash $(PWD)/legacy-docs/bucket/replication/test_del_marker_proxying.sh)
 
 test-replication: install-race test-replication-2site test-replication-3site test-delete-replication test-sio-error test-delete-marker-proxying ## verify multi site replication
 	@echo "Running tests for replicating three sites"
 
 test-site-replication-ldap: install-race ## verify automatic site replication
 	@echo "Running tests for automatic site replication of IAM (with LDAP)"
-	@(env bash $(PWD)/docs/site-replication/run-multi-site-ldap.sh)
+	@(env bash $(PWD)/legacy-docs/site-replication/run-multi-site-ldap.sh)
 
 test-site-replication-oidc: install-race ## verify automatic site replication
 	@echo "Running tests for automatic site replication of IAM (with OIDC)"
-	@(env bash $(PWD)/docs/site-replication/run-multi-site-oidc.sh)
+	@(env bash $(PWD)/legacy-docs/site-replication/run-multi-site-oidc.sh)
 
 test-site-replication-minio: install-race ## verify automatic site replication
 	@echo "Running tests for automatic site replication of IAM (with MinIO IDP)"
-	@(env bash $(PWD)/docs/site-replication/run-multi-site-minio-idp.sh)
+	@(env bash $(PWD)/legacy-docs/site-replication/run-multi-site-minio-idp.sh)
 	@echo "Running tests for automatic site replication of SSE-C objects"
-	@(env bash $(PWD)/docs/site-replication/run-ssec-object-replication.sh)
+	@(env bash $(PWD)/legacy-docs/site-replication/run-ssec-object-replication.sh)
 	@echo "Running tests for automatic site replication of SSE-C objects with SSE-KMS enabled for bucket"
-	@(env bash $(PWD)/docs/site-replication/run-sse-kms-object-replication.sh)
+	@(env bash $(PWD)/legacy-docs/site-replication/run-sse-kms-object-replication.sh)
 	@echo "Running tests for automatic site replication of SSE-C objects with compression enabled for site"
-	@(env bash $(PWD)/docs/site-replication/run-ssec-object-replication-with-compression.sh)
+	@(env bash $(PWD)/legacy-docs/site-replication/run-ssec-object-replication-with-compression.sh)
 
 test-multipart: install-race ## test multipart
 	@echo "Test multipart behavior when part files are missing"
@@ -174,7 +174,7 @@ verify-healing-inconsistent-versions: install-race ## verify resolving inconsist
 	@(env bash $(PWD)/buildscripts/resolve-right-versions.sh)
 
 build-debugging:
-	@(env bash $(PWD)/docs/debugging/build.sh)
+	@(env bash $(PWD)/legacy-docs/debugging/build.sh)
 
 build: checks build-debugging ## builds minio to $(PWD)
 	@echo "Building minio binary to './minio'"
@@ -217,7 +217,7 @@ docker: build ## builds minio docker container
 
 test-resiliency: build
 	@echo "Running resiliency tests"
-	@(DOCKER_COMPOSE_FILE=$(PWD)/docs/resiliency/docker-compose.yaml env bash $(PWD)/docs/resiliency/resiliency-tests.sh)
+	@(DOCKER_COMPOSE_FILE=$(PWD)/legacy-docs/resiliency/docker-compose.yaml env bash $(PWD)/legacy-docs/resiliency/resiliency-tests.sh)
 
 install-race: checks build-debugging ## builds minio to $(PWD)
 	@echo "Building minio binary with -race to './minio'"

@@ -29,7 +29,7 @@ For urgent issues (e.g. production down, etc.), subscribe to [SUBNET](https://mi
 ## Steps to Reproduce (for bugs)
 <!--- Provide a link to a live example, or an unambiguous set of steps to -->
 <!--- reproduce this bug. Include code to reproduce, if relevant -->
-<!--- and make sure you have followed https://github.com/minio/minio/tree/release/docs/debugging to capture relevant logs -->
+<!--- and make sure you have followed https://github.com/cbuntingde/minio/tree/master/legacy-docs/debugging to capture relevant logs -->
 
 1.
 2.

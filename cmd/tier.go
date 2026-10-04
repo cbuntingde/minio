@@ -441,7 +441,7 @@ func (config *TierConfigMgr) configReader(ctx context.Context) (*PutObjReader, *
 
 	// Note: Local variables with names ek, oek, etc are named inline with
 	// acronyms defined here -
-	// https://github.com/minio/minio/blob/master/docs/security/README.md#acronyms
+	// https://github.com/cbuntingde/minio/blob/master/legacy-docs/security/README.md#acronyms
 
 	// Encrypt json encoded tier configurations
 	metadata := make(map[string]string)

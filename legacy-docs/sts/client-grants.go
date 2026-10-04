@@ -67,6 +67,10 @@ func getTokenExpiry() (*credentials.ClientGrantsToken, error) {
 	req.SetBasicAuth(clientID, clientSecret)
 	t := &http.Transport{
 		TLSClientConfig: &tls.Config{
+			// WARNING: skipping TLS certificate verification is INSECURE.
+			// This is only acceptable for local testing. Always set this to
+			// false in production, otherwise the TLS connection is vulnerable
+			// to man-in-the-middle attacks.
 			InsecureSkipVerify: true,
 		},
 	}

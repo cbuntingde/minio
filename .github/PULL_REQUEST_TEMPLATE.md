@@ -23,4 +23,4 @@ contributions to the project maintainers under the Apache 2 license.
 - [ ] Fixes a regression (If yes, please add `commit-id` or `PR #` here)
 - [ ] Unit tests added/updated
 - [ ] Internal documentation updated
-- [ ] Create a documentation update request [here](https://github.com/minio/docs/issues/new?label=doc-change,title=Doc+Updated+Needed+For+PR+github.com%2fminio%2fminio%2fpull%2fNNNNN)
+- [ ] Update the documentation in [docs/](../tree/master/docs) of this repository if this change requires it

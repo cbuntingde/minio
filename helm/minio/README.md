@@ -1,12 +1,16 @@
 # MinIO Community Helm Chart
 
-[![Slack](https://slack.min.io/slack?type=svg)](https://slack.min.io) [![license](https://img.shields.io/badge/license-AGPL%20V3-blue)](https://github.com/minio/minio/blob/master/LICENSE)
+[![license](https://img.shields.io/badge/license-AGPL%20V3-blue)](https://github.com/minio/minio/blob/master/LICENSE)
 
 MinIO is a High Performance Object Storage released under GNU Affero General Public License v3.0. It is API compatible with Amazon S3 cloud storage service. Use MinIO to build high performance infrastructure for machine learning, analytics and application data workloads.
 
+| SECURITY NOTICE |
+| --------------- |
+| This chart belongs to the **security-hardened community fork** of MinIO. The default `image.tag` (`RELEASE.2024-12-18T13-15-44Z`) is the final legacy upstream binary release and **does not include the October 2026 security fixes** (55 patched vulnerabilities, Go 1.26 toolchain, hardened CORS). Before deploying, [build your own Docker image from this repository's source](../../README.md#build-docker-image) and set `image.repository` / `image.tag` to it. The chart sets `MINIO_UPDATE=off` so the server never self-updates to an unpatched legacy binary — update by replacing the image instead. |
+
 | IMPORTANT |
 | -------------------------- |
-| This Helm chart is community built, maintained, and supported. MinIO does not guarantee support for any given bug, feature request, or update referencing this chart. <br/><br/> MinIO publishes a separate [MinIO Kubernetes Operator and Tenant Helm Chart](https://github.com/minio/operator/tree/master/helm) that is officially maintained and supported. MinIO strongly recommends using the MinIO Kubernetes Operator for production deployments. See [Deploy Operator With Helm](https://docs.min.io/community/minio-object-store/operations/deployments/k8s-deploy-operator-helm-on-kubernetes.html?ref=github) for additional documentation. |
+| This Helm chart is community built, maintained, and supported. MinIO does not guarantee support for any given bug, feature request, or update referencing this chart. <br/><br/> MinIO publishes a separate [MinIO Kubernetes Operator and Tenant Helm Chart](https://github.com/minio/operator/tree/master/helm) that is officially maintained and supported. MinIO strongly recommends using the MinIO Kubernetes Operator for production deployments. |
 
 ## Introduction
 

@@ -109,7 +109,7 @@ jobs:
         run: |
           sudo sysctl net.ipv6.conf.all.disable_ipv6=0
           sudo sysctl net.ipv6.conf.default.disable_ipv6=0
-          go run docs/iam/access-manager-plugin.go &
+          go run legacy-docs/iam/access-manager-plugin.go &
           make test-iam
       - name: Test MinIO Old Version data to IAM import current version
         if: matrix.ldap == 'ldaphost:389'

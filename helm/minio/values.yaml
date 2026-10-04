@@ -12,6 +12,12 @@ clusterDomain: cluster.local
 
 ## Set default image, imageTag, and imagePullPolicy. mode is used to indicate the
 ##
+## SECURITY WARNING: The default image tag below is the final legacy upstream
+## release (December 2024). It predates the October 2026 security audit fixes
+## in this repository and is NOT patched. Build your own image from this
+## source tree (see the repository README, section "Build Docker Image") and
+## set `image.repository` and `image.tag` to your patched image before
+## deploying.
 image:
   repository: quay.io/minio/minio
   tag: RELEASE.2024-12-18T13-15-44Z
@@ -88,7 +94,7 @@ runtimeClassName: ""
 
 ## Set default rootUser, rootPassword
 ## rootUser and rootPassword is generated when not set
-## Distributed MinIO ref: https://docs.min.io/community/minio-object-store/operations/install-deploy-manage/deploy-minio-multi-node-multi-drive.html
+## Distributed MinIO ref: https://github.com/cbuntingde/minio/blob/master/docs/deploy.md
 ##
 rootUser: ""
 rootPassword: ""
@@ -127,13 +133,13 @@ pools: 1
 ## TLS Settings for MinIO
 tls:
   enabled: false
-  ## Create a secret with private.key and public.crt files and pass that here. Ref: https://github.com/minio/minio/tree/master/docs/tls/kubernetes#2-create-kubernetes-secret
+  ## Create a secret with private.key and public.crt files and pass that here. Ref: https://github.com/cbuntingde/minio/tree/master/legacy-docs/tls/kubernetes#2-create-kubernetes-secret
   certSecret: ""
   publicCrt: public.crt
   privateKey: private.key
 
-## Trusted Certificates Settings for MinIO. Ref: https://docs.min.io/community/minio-object-store/operations/network-encryption.html#third-party-certificate-authorities
-## Bundle multiple trusted certificates into one secret and pass that here. Ref: https://github.com/minio/minio/tree/master/docs/tls/kubernetes#2-create-kubernetes-secret
+## Trusted Certificates Settings for MinIO. Ref: https://github.com/cbuntingde/minio/blob/master/docs/configuration.md#tls
+## Bundle multiple trusted certificates into one secret and pass that here. Ref: https://github.com/cbuntingde/minio/tree/master/legacy-docs/tls/kubernetes#2-create-kubernetes-secret
 ## When using self-signed certificates, remember to include MinIO's own certificate in the bundle with key public.crt.
 ## If certSecret is left empty and tls is enabled, this chart installs the public certificate from .Values.tls.certSecret.
 trustedCertsSecret: ""
@@ -369,7 +375,7 @@ makePolicyJob:
 users:
   ## Username, password and policy to be assigned to the user
   ## Default policies are [readonly|readwrite|writeonly|consoleAdmin|diagnostics]
-  ## Add new policies as explained here https://docs.min.io/community/minio-object-store/administration/identity-access-management.html#access-management
+  ## Add new policies as explained here https://github.com/cbuntingde/minio/blob/master/docs/configuration.md#identity-and-kms
   ## NOTE: this will fail if LDAP is enabled in your MinIO deployment
   ## make sure to disable this if you are using LDAP.
   - accessKey: console
@@ -398,7 +404,7 @@ makeUserJob:
 svcaccts:
   []
   ## accessKey, secretKey and parent user to be assigned to the service accounts
-  ## Add new service accounts as explained here https://docs.min.io/community/minio-object-store/administration/identity-access-management/minio-user-management.html#access-keys
+  ## Add new service accounts as explained here https://github.com/cbuntingde/minio/blob/master/docs/configuration.md#identity-and-kms
   # - accessKey: console-svcacct
   #   secretKey: console123
   #   user: console
@@ -515,9 +521,14 @@ postJob:
 ## Use this field to add environment variables relevant to MinIO server. These fields will be passed on to MinIO container(s)
 ## when Chart is deployed
 environment:
-  ## Please refer for comprehensive list https://docs.min.io/community/minio-object-store/reference/minio-server/minio-server.html
+  ## Please refer for comprehensive list https://github.com/cbuntingde/minio/blob/master/docs/configuration.md
   ## MINIO_SUBNET_LICENSE: "License key obtained from https://subnet.min.io"
   ## MINIO_BROWSER: "off"
+  ## Disable the in-place self-updater: it fetches binaries from the legacy
+  ## upstream release channel (dl.min.io), which no longer receives security
+  ## fixes and would replace a patched build with an unpatched binary.
+  ## Update containerized MinIO by replacing the container image instead.
+  MINIO_UPDATE: "off"
 
 ## The name of a secret in the same kubernetes namespace which contain secret values
 ## This can be useful for LDAP password, etc
@@ -527,7 +538,7 @@ extraSecret: ~
 
 ## OpenID Identity Management
 ## The following section documents environment variables for enabling external identity management using an OpenID Connect (OIDC)-compatible provider.
-## See https://docs.min.io/community/minio-object-store/operations/external-iam/configure-openid-external-identity-management.html for a tutorial on using these variables.
+## See https://github.com/cbuntingde/minio/blob/master/docs/configuration.md#identity-and-kms for a tutorial on using these variables.
 oidc:
   enabled: false
   configUrl: "https://identity-provider-url/.well-known/openid-configuration"
@@ -617,7 +628,7 @@ metrics:
     # Scrape timeout, for example `scrapeTimeout: 10s`
     scrapeTimeout: ~
 
-## ETCD settings: https://github.com/minio/minio/blob/master/docs/sts/etcd.md
+## ETCD settings: https://github.com/cbuntingde/minio/blob/master/legacy-docs/sts/etcd.md
 ## Define endpoints to enable this section.
 etcd:
   endpoints: []
