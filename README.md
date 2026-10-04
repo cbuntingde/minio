@@ -2,7 +2,7 @@
 
 [![license](https://img.shields.io/badge/license-AGPL%20V3-blue)](LICENSE)
 
-[![MinIO](https://raw.githubusercontent.com/minio/minio/master/.github/logo.svg?sanitize=true)](https://min.io)
+[![MinIO](https://raw.githubusercontent.com/cbuntingde/minio/master/.github/logo.svg?sanitize=true)](https://github.com/cbuntingde/minio)
 
 MinIO is a high-performance, S3-compatible object storage server released under the
 GNU AGPL v3.0 license. This is a **security-hardened fork of the MinIO community
@@ -124,7 +124,9 @@ not call the affected symbols and no upstream fix has been released yet.
 Requires [Go 1.26](https://golang.org/doc/install) or later.
 
 ```sh
-go install github.com/minio/minio@latest
+git clone https://github.com/cbuntingde/minio.git
+cd minio
+go build
 ```
 
 You can alternatively run `go build` and use the `GOOS` and `GOARCH` environment
@@ -156,7 +158,7 @@ docker run -p 9000:9000 myminio:minio server /tmp/minio
 ## Install using Helm Charts
 
 See the community-maintained [Helm charts](helm/minio) (instructions in the
-folder-level README) or the [MinIO Operator](https://github.com/minio/operator).
+folder-level README).
 
 ## Test MinIO Connectivity using `mc`
 

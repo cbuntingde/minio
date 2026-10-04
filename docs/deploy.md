@@ -18,7 +18,9 @@ distribution, which guarantees you get the patched toolchain and dependencies.
 Requires [Go 1.26](https://golang.org/doc/install) or later.
 
 ```sh
-go install github.com/minio/minio@latest
+git clone https://github.com/cbuntingde/minio.git
+cd minio
+go build
 ```
 
 Or build with a specific target:
