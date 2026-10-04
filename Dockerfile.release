@@ -1,3 +1,10 @@
+# NOTE (fork): This Dockerfile does NOT build MinIO from source. It downloads
+# the frozen legacy upstream binary from dl.min.io and verifies it with MinIO's
+# public signing key, so the resulting image does NOT contain this fork's
+# security fixes.
+#
+# Use Dockerfile.source instead — it compiles this repository with the pinned
+# Go toolchain and is what the Publish Container Image workflow builds.
 FROM golang:1.26-alpine AS build
 
 ARG TARGETARCH

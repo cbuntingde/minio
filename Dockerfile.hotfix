@@ -1,3 +1,6 @@
+# NOTE (fork): This Dockerfile does NOT build MinIO from source. It downloads
+# the frozen legacy upstream binary from dl.min.io, so the resulting image does
+# NOT contain this fork's security fixes. Use Dockerfile.source instead.
 FROM golang:1.26-alpine as build
 
 ARG TARGETARCH

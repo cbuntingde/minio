@@ -1,0 +1,71 @@
+# syntax=docker/dockerfile:1
+
+# From-source image for this security-hardened fork.
+#
+# Unlike Dockerfile.release / Dockerfile.release.old_cpu (which download the
+# frozen legacy binary from dl.min.io and verify it with MinIO's signing key),
+# this Dockerfile compiles the server from this repository with the pinned Go
+# toolchain, so the resulting image contains this fork's security fixes.
+#
+#   docker build -f Dockerfile.source -t myminio:latest .
+#
+# Published multi-arch images: ghcr.io/cbuntingde/minio
+
+FROM golang:1.26-alpine AS build
+
+ARG TARGETOS
+ARG TARGETARCH
+ARG VERSION=devel
+ARG RELEASE=devel
+
+ENV CGO_ENABLED=0
+
+WORKDIR /build
+
+# Cache module downloads separately from the source for faster rebuilds.
+COPY go.mod go.sum ./
+RUN --mount=type=cache,target=/go/pkg/mod go mod download
+
+COPY . .
+
+# Build the server for the requested platform. Version metadata is injected
+# the same way the Makefile does it (buildscripts/gen-ldflags.go), but via
+# build args since the git metadata is not part of the build context.
+RUN --mount=type=cache,target=/go/pkg/mod \
+    --mount=type=cache,target=/root/.cache/go-build \
+    GOOS=${TARGETOS:-linux} GOARCH=${TARGETARCH:-amd64} go build \
+      -tags kqueue -trimpath \
+      -ldflags "-s -w -X github.com/minio/minio/cmd.Version=${VERSION} -X github.com/minio/minio/cmd.ReleaseTag=${RELEASE}" \
+      -o /build/minio .
+
+FROM alpine:3.22
+
+ARG RELEASE=devel
+
+RUN apk add -U --no-cache ca-certificates curl
+
+COPY --from=build /build/minio /usr/bin/minio
+COPY dockerscripts/docker-entrypoint.sh /usr/bin/docker-entrypoint.sh
+
+# Normalize line endings: a Windows checkout of the entrypoint would otherwise
+# carry CRLF and fail at exec time ("/bin/sh\r: not found").
+RUN sed -i 's/\r$//' /usr/bin/docker-entrypoint.sh && \
+    chmod +x /usr/bin/minio /usr/bin/docker-entrypoint.sh
+
+# The in-place self-updater fetches the frozen, unpatched legacy binaries from
+# dl.min.io; it would silently downgrade this image's security. Update by
+# pulling a newer image instead.
+ENV MINIO_UPDATE=off
+
+LABEL name="MinIO" \
+      org.opencontainers.image.title="MinIO (security-hardened community fork)" \
+      org.opencontainers.image.description="MinIO is a high-performance, S3-compatible object storage server. This build is compiled from the security-hardened community fork source." \
+      org.opencontainers.image.source="https://github.com/cbuntingde/minio" \
+      org.opencontainers.image.licenses="AGPL-3.0-or-later" \
+      org.opencontainers.image.version="${RELEASE}"
+
+EXPOSE 9000
+VOLUME ["/data"]
+
+ENTRYPOINT ["/usr/bin/docker-entrypoint.sh"]
+CMD ["minio"]

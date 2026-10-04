@@ -1,0 +1,3 @@
+# Shell scripts must keep LF line endings. CRLF breaks shebang/interpreter
+# resolution inside Linux containers and CI (e.g. "exec /bin/sh\r: not found").
+*.sh text eol=lf
