@@ -1,5 +1,5 @@
 module github.com/minio/minio/legacy-docs/debugging/pprofgoparser
 
-go 1.21
+go 1.26.0
 
-toolchain go1.24.8
+toolchain go1.26.8
