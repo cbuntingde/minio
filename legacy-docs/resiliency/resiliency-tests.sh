@@ -19,7 +19,7 @@ function cleanup_and_prune() {
 }
 
 function verify_resiliency() {
-	docs/resiliency/resiliency-verify-script.sh
+	legacy-docs/resiliency/resiliency-verify-script.sh
 	RESULT=$(grep "script passed" <resiliency-verify.log)
 	if [ "$RESULT" != "script passed" ]; then
 		echo -e "${RED}${1} Failed${NC}"
@@ -30,7 +30,7 @@ function verify_resiliency() {
 }
 
 function verify_resiliency_failure() {
-	docs/resiliency/resiliency-verify-failure-script.sh
+	legacy-docs/resiliency/resiliency-verify-failure-script.sh
 	RESULT=$(grep "script passed" <resiliency-verify-failure.log)
 	if [ "$RESULT" != "script passed" ]; then
 		echo -e "${RED}${1} Failed${NC}"
@@ -42,7 +42,7 @@ function verify_resiliency_failure() {
 
 function verify_resiliency_healing() {
 	local WANT=$2
-	docs/resiliency/resiliency-verify-healing-script.sh "$WANT"
+	legacy-docs/resiliency/resiliency-verify-healing-script.sh "$WANT"
 	RESULT=$(grep "script passed" <resiliency-verify-healing.log)
 	if [ "$RESULT" != "script passed" ]; then
 		echo -e "${RED}${1} Failed${NC}"
@@ -404,7 +404,7 @@ function main() {
 	docker compose -f "${DOCKER_COMPOSE_FILE}" up -d
 
 	# Initial setup
-	docs/resiliency/resiliency-initial-script.sh
+	legacy-docs/resiliency/resiliency-initial-script.sh
 	RESULT=$(grep "script passed" <resiliency-initial.log)
 	if [ "$RESULT" != "script passed" ]; then
 		cleanup_and_prune

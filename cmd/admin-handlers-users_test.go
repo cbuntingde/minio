@@ -1396,7 +1396,7 @@ func TestIAM_AMPInternalIDPServerSuite(t *testing.T) {
 }
 
 // TestAccMgmtPlugin - this test assumes that the access-management-plugin is
-// the same as the example in `docs/iam/access-manager-plugin.go` -
+// the same as the example in `legacy-docs/iam/access-manager-plugin.go` -
 // specifically, it denies only `s3:Put*` operations on non-root accounts.
 func (s *TestSuiteIAM) TestAccMgmtPlugin(c *check) {
 	ctx, cancel := context.WithTimeout(context.Background(), testDefaultTimeout)

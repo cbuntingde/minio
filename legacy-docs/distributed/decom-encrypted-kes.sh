@@ -44,8 +44,8 @@ pid=$!
 ./mc admin user add myminio/ minio123 minio123
 ./mc admin user add myminio/ minio12345 minio12345
 
-./mc admin policy create myminio/ rw ./docs/distributed/rw.json
-./mc admin policy create myminio/ lake ./docs/distributed/rw.json
+./mc admin policy create myminio/ rw ./legacy-docs/distributed/rw.json
+./mc admin policy create myminio/ lake ./legacy-docs/distributed/rw.json
 
 ./mc admin policy attach myminio/ rw --user=minio123
 ./mc admin policy attach myminio/ lake --user=minio12345

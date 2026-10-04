@@ -73,7 +73,7 @@ minio server /mnt/data
 On another terminal run `web-identity.go` a sample client application which obtains JWT id_tokens from an identity provider, in our case its Keycloak. Uses the returned id_token response to get new temporary credentials from the MinIO server using the STS API call `AssumeRoleWithWebIdentity`.
 
 ```
-$ go run docs/sts/web-identity.go -cid account -csec 072e7f00-4289-469c-9ab2-bbe843c7f5a8  -config-ep "http://localhost:8080/auth/realms/demo/.well-known/openid-configuration" -port 8888
+$ go run legacy-docs/sts/web-identity.go -cid account -csec 072e7f00-4289-469c-9ab2-bbe843c7f5a8  -config-ep "http://localhost:8080/auth/realms/demo/.well-known/openid-configuration" -port 8888
 2018/12/26 17:49:36 listening on http://localhost:8888/
 ```
 

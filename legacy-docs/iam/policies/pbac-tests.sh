@@ -41,8 +41,8 @@ mc ready myminio
 
 mc admin user add myminio/ minio123 minio123
 
-mc admin policy create myminio/ deny-non-sse-kms-pol ./docs/iam/policies/deny-non-sse-kms-objects.json
-mc admin policy create myminio/ deny-invalid-sse-kms-pol ./docs/iam/policies/deny-objects-with-invalid-sse-kms-key-id.json
+mc admin policy create myminio/ deny-non-sse-kms-pol ./legacy-docs/iam/policies/deny-non-sse-kms-objects.json
+mc admin policy create myminio/ deny-invalid-sse-kms-pol ./legacy-docs/iam/policies/deny-objects-with-invalid-sse-kms-key-id.json
 
 mc admin policy attach myminio deny-non-sse-kms-pol --user minio123
 mc admin policy attach myminio deny-invalid-sse-kms-pol --user minio123

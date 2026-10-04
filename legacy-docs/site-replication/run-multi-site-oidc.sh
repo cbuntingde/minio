@@ -67,7 +67,7 @@ export MC_HOST_minio3=http://minio:minio123@localhost:9003
 
 ./mc admin replicate add minio1 minio2 minio3
 
-./mc admin policy create minio1 projecta ./docs/site-replication/rw.json
+./mc admin policy create minio1 projecta ./legacy-docs/site-replication/rw.json
 sleep 5
 
 ./mc admin policy info minio2 projecta >/dev/null 2>&1
@@ -96,11 +96,11 @@ if [ $? -eq 0 ]; then
 	exit_1
 fi
 
-./mc admin policy create minio1 projecta ./docs/site-replication/rw.json
+./mc admin policy create minio1 projecta ./legacy-docs/site-replication/rw.json
 sleep 5
 
 # Generate STS credential with STS call to minio1
-STS_CRED=$(MINIO_ENDPOINT=http://localhost:9001 go run ./docs/site-replication/gen-oidc-sts-cred.go)
+STS_CRED=$(MINIO_ENDPOINT=http://localhost:9001 go run ./legacy-docs/site-replication/gen-oidc-sts-cred.go)
 
 MC_HOST_foo=http://${STS_CRED}@localhost:9001 ./mc ls foo
 if [ $? -ne 0 ]; then

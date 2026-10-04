@@ -17,8 +17,8 @@ fi
 mc -v
 
 # Start LDAP server
-echo "Copying docs/distributed/samples/bootstrap-complete.ldif => minio-iam-testing/ldap/50-bootstrap.ldif"
-cp docs/distributed/samples/bootstrap-complete.ldif minio-iam-testing/ldap/50-bootstrap.ldif || exit 1
+echo "Copying legacy-docs/distributed/samples/bootstrap-complete.ldif => minio-iam-testing/ldap/50-bootstrap.ldif"
+cp legacy-docs/distributed/samples/bootstrap-complete.ldif minio-iam-testing/ldap/50-bootstrap.ldif || exit 1
 cd ./minio-iam-testing
 make docker-images
 make docker-run
@@ -40,7 +40,7 @@ sleep 30
 
 ./mc admin service restart myminio --json
 ./mc ready myminio
-./mc admin cluster iam import myminio docs/distributed/samples/myminio-iam-info.zip
+./mc admin cluster iam import myminio legacy-docs/distributed/samples/myminio-iam-info.zip
 sleep 10
 
 # Verify the list of users and service accounts from the import
@@ -69,8 +69,8 @@ docker rm -f $(docker ps -aq)
 rm -rf /tmp/ldap{1..4}
 
 # Deploy the LDAP config witg missing groups/DN
-echo "Copying docs/distributed/samples/bootstrap-partial.ldif => minio-iam-testing/ldap/50-bootstrap.ldif"
-cp docs/distributed/samples/bootstrap-partial.ldif minio-iam-testing/ldap/50-bootstrap.ldif || exit 1
+echo "Copying legacy-docs/distributed/samples/bootstrap-partial.ldif => minio-iam-testing/ldap/50-bootstrap.ldif"
+cp legacy-docs/distributed/samples/bootstrap-partial.ldif minio-iam-testing/ldap/50-bootstrap.ldif || exit 1
 cd ./minio-iam-testing
 make docker-images
 make docker-run
@@ -87,7 +87,7 @@ sleep 30
 
 ./mc admin service restart myminio1 --json
 ./mc ready myminio1
-./mc admin cluster iam import myminio1 docs/distributed/samples/myminio-iam-info.zip
+./mc admin cluster iam import myminio1 legacy-docs/distributed/samples/myminio-iam-info.zip
 sleep 10
 
 # Verify the list of users and service accounts from the import

@@ -139,7 +139,7 @@ mc admin service restart myminio
 Client ID can be found by clicking any of the clients listed [here](http://localhost:8080/auth/admin/master/console/#/realms/minio/clients). If you have followed the above steps docs, the default Client ID will be `account`.
 
 ```
-$ go run docs/sts/web-identity.go -cid account -csec 072e7f00-4289-469c-9ab2-bbe843c7f5a8  -config-ep "http://localhost:8080/auth/realms/minio/.well-known/openid-configuration" -port 8888
+$ go run legacy-docs/sts/web-identity.go -cid account -csec 072e7f00-4289-469c-9ab2-bbe843c7f5a8  -config-ep "http://localhost:8080/auth/realms/minio/.well-known/openid-configuration" -port 8888
 2018/12/26 17:49:36 listening on http://localhost:8888/
 ```
 

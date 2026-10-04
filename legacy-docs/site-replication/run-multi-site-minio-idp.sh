@@ -101,7 +101,7 @@ sleep 5
 
 ./mc admin group info minio1 foobar-g
 
-./mc admin policy create minio1 rw ./docs/site-replication/rw.json
+./mc admin policy create minio1 rw ./legacy-docs/site-replication/rw.json
 
 sleep 5
 ./mc admin policy info minio2 rw >/dev/null 2>&1

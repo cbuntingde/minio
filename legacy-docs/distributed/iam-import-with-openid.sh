@@ -46,7 +46,7 @@ mc -v
 
 ./mc admin service restart myminio --json
 ./mc ready myminio
-./mc admin cluster iam import myminio docs/distributed/samples/myminio-iam-info-openid.zip
+./mc admin cluster iam import myminio legacy-docs/distributed/samples/myminio-iam-info-openid.zip
 
 # Verify if buckets / objects accessible using service account
 echo "Verifying buckets and objects access for the imported service account"

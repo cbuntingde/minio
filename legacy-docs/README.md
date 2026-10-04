@@ -22,7 +22,7 @@ this security-hardened fork. Notable examples:
 - Instructions that download pre-compiled binaries from `dl.min.io` — these
   are **frozen legacy releases that do not contain this fork's security fixes**.
 - References to the embedded Console web UI.
-- CORS behavior (see [../docs/configuration.md](../docs/configuration.md)) —
+- CORS behavior (see [../legacy-docs/configuration.md](../legacy-docs/configuration.md)) —
   this fork ships a hardened non-credentialed wildcard default.
 - References to the upstream self-updater — this fork disables it
   (`MINIO_UPDATE=off`).

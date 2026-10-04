@@ -74,7 +74,7 @@ sleep 5
 
 ./mc admin user info minio2 "uid=dillon,ou=people,ou=swengg,dc=min,dc=io"
 ./mc admin user info minio3 "uid=dillon,ou=people,ou=swengg,dc=min,dc=io"
-./mc admin policy create minio1 rw ./docs/site-replication/rw.json
+./mc admin policy create minio1 rw ./legacy-docs/site-replication/rw.json
 
 sleep 5
 ./mc admin policy info minio2 rw >/dev/null 2>&1

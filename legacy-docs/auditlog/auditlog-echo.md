@@ -3,7 +3,7 @@
 1. Run the tool with:
 
 ```
-go run docs/auditlog/auditlog-echo.go
+go run legacy-docs/auditlog/auditlog-echo.go
 ```
 
 The listen port has a default value (8080), but can be set with the `-port` flag.
