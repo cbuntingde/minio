@@ -254,9 +254,10 @@ func (s *TestSuiteCommon) TestBucketSQSNotificationWebHook(c *check) {
 }
 
 func (s *TestSuiteCommon) TestCors(c *check) {
+	// No explicit CORS origins are configured on the test server, so the
+	// server must respond with a non-credentialed wildcard CORS policy.
 	expectedMap := http.Header{}
-	expectedMap.Set("Access-Control-Allow-Credentials", "true")
-	expectedMap.Set("Access-Control-Allow-Origin", "http://foobar.com")
+	expectedMap.Set("Access-Control-Allow-Origin", "*")
 	expectedMap["Access-Control-Expose-Headers"] = []string{
 		"Date",
 		"Etag",
@@ -285,6 +286,13 @@ func (s *TestSuiteCommon) TestCors(c *check) {
 	res, err := s.client.Do(req)
 	if err != nil {
 		c.Fatal(err)
+	}
+
+	// Credentialed CORS must not be enabled by default: no origin may be
+	// reflected together with Allow-Credentials unless origins were
+	// explicitly configured via MINIO_API_CORS_ALLOW_ORIGIN.
+	if v, ok := res.Header["Access-Control-Allow-Credentials"]; ok {
+		c.Errorf("Expected no Access-Control-Allow-Credentials header in default configuration, got %v", v)
 	}
 
 	for k := range expectedMap {

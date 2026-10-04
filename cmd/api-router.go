@@ -20,6 +20,7 @@ package cmd
 import (
 	"net"
 	"net/http"
+	"slices"
 
 	consoleapi "github.com/minio/console/api"
 	xhttp "github.com/minio/minio/internal/http"
@@ -671,15 +672,8 @@ func corsHandler(handler http.Handler) http.Handler {
 		"x-amz*",
 		"*",
 	}
+	corsAllowOrigins := globalAPIConfig.getCorsAllowOrigins()
 	opts := cors.Options{
-		AllowOriginFunc: func(origin string) bool {
-			for _, allowedOrigin := range globalAPIConfig.getCorsAllowOrigins() {
-				if wildcard.MatchSimple(allowedOrigin, origin) {
-					return true
-				}
-			}
-			return false
-		},
 		AllowedMethods: []string{
 			http.MethodGet,
 			http.MethodPut,
@@ -689,9 +683,34 @@ func corsHandler(handler http.Handler) http.Handler {
 			http.MethodOptions,
 			http.MethodPatch,
 		},
-		AllowedHeaders:   commonS3Headers,
-		ExposedHeaders:   commonS3Headers,
-		AllowCredentials: true,
+		AllowedHeaders: commonS3Headers,
+		ExposedHeaders: commonS3Headers,
+	}
+	if slices.Contains(corsAllowOrigins, "*") {
+		// No explicit origins are configured (or the wildcard origin is
+		// configured). Respond with a non-credentialed wildcard CORS policy
+		// (Access-Control-Allow-Origin: * without Allow-Credentials).
+		//
+		// Reflecting arbitrary origins while Allow-Credentials is enabled
+		// would allow any website to issue credentialed cross-origin
+		// requests to this server by default.
+		//
+		// Configure explicit origins via MINIO_API_CORS_ALLOW_ORIGIN to
+		// enable credentialed CORS for those origins.
+		opts.AllowedOrigins = []string{"*"}
+		opts.AllowCredentials = false
+	} else {
+		// Explicit origins are configured; only those origins may issue
+		// credentialed cross-origin requests to this server.
+		opts.AllowOriginFunc = func(origin string) bool {
+			for _, allowedOrigin := range corsAllowOrigins {
+				if wildcard.MatchSimple(allowedOrigin, origin) {
+					return true
+				}
+			}
+			return false
+		}
+		opts.AllowCredentials = true
 	}
 	return cors.New(opts).Handler(handler)
 }
