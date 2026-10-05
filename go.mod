@@ -290,3 +290,14 @@ require (
 // the package github.com/go-openapi/testify/v2/assert/yaml, which is needed
 // by the test dependencies of github.com/go-openapi/swag/loading v0.25.4.
 replace github.com/go-openapi/testify/v2 => github.com/go-openapi/testify/v2 v2.0.2
+
+// Use this fork's console rather than the upstream module. The upstream
+// github.com/minio/console repository is no longer publicly accessible, and
+// the console served by an image is the prebuilt web-app/build bundle embedded
+// in this tree, not anything rebuilt at image build time. Vendoring the console
+// source here means the fork's branding, the login page and the license page
+// notice are the ones that actually ship.
+//
+// The vendored copy is synced from the private repository at
+// https://github.com/cbuntingde/minio-console with hack/sync-console.ps1.
+replace github.com/minio/console => ./console
