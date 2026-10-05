@@ -24,6 +24,13 @@ WORKDIR /build
 
 # Cache module downloads separately from the source for faster rebuilds.
 COPY go.mod go.sum ./
+
+# The console is vendored under console/ and resolved through a filesystem
+# replace, so Go has to be able to read console/go.mod before it can resolve
+# the module graph. Copying only go.mod and go.sum above is not enough: the
+# later COPY . . has not run yet at this layer, and "go mod download" fails
+# with "reading console/go.mod: no such file or directory".
+COPY console/go.mod console/go.sum ./console/
 RUN --mount=type=cache,target=/go/pkg/mod go mod download
 
 COPY . .
