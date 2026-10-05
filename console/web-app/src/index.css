@@ -44,6 +44,9 @@ input.removeArrows[type="number"],
   background: linear-gradient(160deg, #05070f 0%, #0a1424 45%, #10243d 100%) !important;
   position: relative;
   overflow: hidden;
+  /* Creates the stacking context the wave blends against. Without it the
+     screen blend would reach past the panel and wash out the promo text. */
+  isolation: isolate;
 }
 
 /* A soft accent wash in the corner, drawn with a gradient so there is still no
@@ -62,36 +65,32 @@ input.removeArrows[type="number"],
     rgba(56, 189, 248, 0) 70%
   );
   pointer-events: none;
+  z-index: 0;
 }
 
-/* Promote the promo text and wave above the wash. */
-.mainContainer .decorationPanel > * {
-  position: relative;
-  z-index: 1;
+/* The MinIO wave is a 1920x1080 looping video on a black field. Screen
+   blending is what lets a custom background sit under it: black becomes
+   transparent and the wave glows over the gradient, with the animation and
+   its full brightness intact. Dimming it or masking its edges instead would
+   change how the upstream background looks, which is not the point here.
+   The video sits in a .videoContainer wrapper, so that wrapper is what needs
+   dropping below the text. */
+.mainContainer .decorationPanel .videoContainer {
+  z-index: 0 !important;
 }
 
-/* The upstream wave video is an MP4 of unknown provenance. Made transparent so
-   its own black background does not show as a rectangle over the gradient,
-   dimmed so it reads as texture rather than MinIO marketing, and masked at both
-   ends so it fades into the panel. */
 .mainContainer .decorationPanel video.videoBG {
   background: transparent !important;
-  opacity: 0.5 !important;
-  filter: saturate(0.7);
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    #000 22%,
-    #000 70%,
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    to bottom,
-    transparent 0%,
-    #000 22%,
-    #000 70%,
-    transparent 100%
-  );
+  mix-blend-mode: screen;
+  opacity: 1 !important;
+  filter: none;
+}
+
+/* Everything else in the panel, the promo text included, stays above the
+   wave so the blend cannot touch it. */
+.mainContainer .decorationPanel > *:not(.videoContainer) {
+  position: relative;
+  z-index: 1;
 }
 
 /* A hint of the fork's accent on the form panel's edge, tying the two halves
