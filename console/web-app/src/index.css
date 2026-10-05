@@ -26,68 +26,93 @@ input.removeArrows[type="number"],
 }
 
 /*
- * Login page branding for the community fork.
+ * Login page background for the community fork.
  *
- * The login layout is rendered by LoginWrapper from the mds design system, so
- * the panel backgrounds are not ours to set through props. They are overridden
- * here instead, against the class names the wrapper puts on the DOM.
- * decorationPanel is the dark left panel, formPanel the grey right panel, and
- * videoBG the looping wave video. Keep the "!"important flags: mds injects its
- * styles with styled-components at runtime and those rules land after this
+ * The layout is rendered by LoginWrapper from the mds design system, so the
+ * panel background is not ours to set through props. It is replaced here
+ * instead, against the class names the wrapper puts on the DOM: mainContainer
+ * holds decorationPanel (the left panel), formPanel (the right panel) and
+ * videoBG (the upstream MinIO wave). Keep the "!important" flags: mds injects
+ * its styles with styled-components at runtime and those land after this
  * stylesheet, so specificity alone will not win.
  *
- * The background is a self-contained gradient rather than an image so the login
- * page pulls nothing from a third-party host. A hosted image would need the
- * asset to be publicly readable, and this repository is private.
+ * The MinIO wave is removed, not restyled. It is a 1920x1080 MP4 of unknown
+ * provenance and it is MinIO's marketing, not this fork's. What replaces it is
+ * two slow-drifting colour fields on a deep navy base: animated, self
+ * contained, and pulling nothing from a third-party host. A hosted image
+ * would need to be publicly readable and this repository is private, and a
+ * video would need to be generated and shipped as an asset, which is the
+ * thing the unavailable mds dependency makes impossible to do properly.
  */
 .mainContainer .decorationPanel {
-  background: linear-gradient(160deg, #05070f 0%, #0a1424 45%, #10243d 100%) !important;
+  background: linear-gradient(165deg, #060a14 0%, #0b1526 50%, #0d1f38 100%) !important;
   position: relative;
   overflow: hidden;
-  /* Creates the stacking context the wave blends against. Without it the
-     screen blend would reach past the panel and wash out the promo text. */
-  isolation: isolate;
 }
 
-/* A soft accent wash in the corner, drawn with a gradient so there is still no
-   image request. Sits behind the wave and the promo text. */
-.mainContainer .decorationPanel::before {
+/* Drop the upstream wave outright. */
+.mainContainer .decorationPanel .videoContainer,
+.mainContainer .decorationPanel video.videoBG {
+  display: none !important;
+}
+
+/* The two colour fields. Distinct durations and a negative-free start offset
+   keep them from ever lining up into a repeating pattern. */
+.mainContainer .decorationPanel::before,
+.mainContainer .decorationPanel::after {
   content: "";
   position: absolute;
-  top: -30%;
-  right: -20%;
-  width: 70%;
-  height: 90%;
-  background: radial-gradient(
-    circle at center,
-    rgba(56, 189, 248, 0.16) 0%,
-    rgba(56, 189, 248, 0.05) 45%,
-    rgba(56, 189, 248, 0) 70%
-  );
+  border-radius: 50%;
+  filter: blur(90px);
   pointer-events: none;
   z-index: 0;
 }
 
-/* The MinIO wave is a 1920x1080 looping video on a black field. Screen
-   blending is what lets a custom background sit under it: black becomes
-   transparent and the wave glows over the gradient, with the animation and
-   its full brightness intact. Dimming it or masking its edges instead would
-   change how the upstream background looks, which is not the point here.
-   The video sits in a .videoContainer wrapper, so that wrapper is what needs
-   dropping below the text. */
-.mainContainer .decorationPanel .videoContainer {
-  z-index: 0 !important;
+.mainContainer .decorationPanel::before {
+  width: 560px;
+  height: 560px;
+  top: -12%;
+  left: -10%;
+  background: radial-gradient(
+    circle,
+    rgba(29, 78, 216, 0.55) 0%,
+    rgba(29, 78, 216, 0) 70%
+  );
+  animation: forkDriftA 26s ease-in-out infinite alternate;
 }
 
-.mainContainer .decorationPanel video.videoBG {
-  background: transparent !important;
-  mix-blend-mode: screen;
-  opacity: 1 !important;
-  filter: none;
+.mainContainer .decorationPanel::after {
+  width: 500px;
+  height: 500px;
+  bottom: -18%;
+  right: -8%;
+  background: radial-gradient(
+    circle,
+    rgba(8, 145, 178, 0.5) 0%,
+    rgba(8, 145, 178, 0) 70%
+  );
+  animation: forkDriftB 34s ease-in-out infinite alternate;
 }
 
-/* Everything else in the panel, the promo text included, stays above the
-   wave so the blend cannot touch it. */
+@keyframes forkDriftA {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(140px, 90px, 0) scale(1.3);
+  }
+}
+
+@keyframes forkDriftB {
+  from {
+    transform: translate3d(0, 0, 0) scale(1.15);
+  }
+  to {
+    transform: translate3d(-120px, -70px, 0) scale(0.95);
+  }
+}
+
+/* The promo text sits above the colour fields. */
 .mainContainer .decorationPanel > *:not(.videoContainer) {
   position: relative;
   z-index: 1;
