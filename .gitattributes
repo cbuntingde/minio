@@ -1,3 +1,8 @@
 # Shell scripts must keep LF line endings. CRLF breaks shebang/interpreter
 # resolution inside Linux containers and CI (e.g. "exec /bin/sh\r: not found").
 *.sh text eol=lf
+
+# The vendored console tree must keep LF endings. A CRLF checkout breaks the
+# shell scripts under console/web-app/tests and turns every sync into a
+# whole-tree diff. text=auto leaves binaries (png, ico, pdf) alone.
+/console/** text=auto eol=lf

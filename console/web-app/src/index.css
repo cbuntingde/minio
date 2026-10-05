@@ -1,0 +1,101 @@
+body {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family:
+    source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input.removeArrows::-webkit-outer-spin-button,
+input.removeArrows::-webkit-inner-spin-button,
+.removeArrows input::-webkit-outer-spin-button,
+.removeArrows input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input.removeArrows[type="number"],
+.removeArrows input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/*
+ * Login page branding for the community fork.
+ *
+ * The login layout is rendered by LoginWrapper from the mds design system, so
+ * the panel backgrounds are not ours to set through props. They are overridden
+ * here instead, against the class names the wrapper puts on the DOM.
+ * decorationPanel is the dark left panel, formPanel the grey right panel, and
+ * videoBG the looping wave video. Keep the "!"important flags: mds injects its
+ * styles with styled-components at runtime and those rules land after this
+ * stylesheet, so specificity alone will not win.
+ *
+ * The background is a self-contained gradient rather than an image so the login
+ * page pulls nothing from a third-party host. A hosted image would need the
+ * asset to be publicly readable, and this repository is private.
+ */
+.mainContainer .decorationPanel {
+  background: linear-gradient(160deg, #05070f 0%, #0a1424 45%, #10243d 100%) !important;
+  position: relative;
+  overflow: hidden;
+  /* Creates the stacking context the wave blends against. Without it the
+     screen blend would reach past the panel and wash out the promo text. */
+  isolation: isolate;
+}
+
+/* A soft accent wash in the corner, drawn with a gradient so there is still no
+   image request. Sits behind the wave and the promo text. */
+.mainContainer .decorationPanel::before {
+  content: "";
+  position: absolute;
+  top: -30%;
+  right: -20%;
+  width: 70%;
+  height: 90%;
+  background: radial-gradient(
+    circle at center,
+    rgba(56, 189, 248, 0.16) 0%,
+    rgba(56, 189, 248, 0.05) 45%,
+    rgba(56, 189, 248, 0) 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* The MinIO wave is a 1920x1080 looping video on a black field. Screen
+   blending is what lets a custom background sit under it: black becomes
+   transparent and the wave glows over the gradient, with the animation and
+   its full brightness intact. Dimming it or masking its edges instead would
+   change how the upstream background looks, which is not the point here.
+   The video sits in a .videoContainer wrapper, so that wrapper is what needs
+   dropping below the text. */
+.mainContainer .decorationPanel .videoContainer {
+  z-index: 0 !important;
+}
+
+.mainContainer .decorationPanel video.videoBG {
+  background: transparent !important;
+  mix-blend-mode: screen;
+  opacity: 1 !important;
+  filter: none;
+}
+
+/* Everything else in the panel, the promo text included, stays above the
+   wave so the blend cannot touch it. */
+.mainContainer .decorationPanel > *:not(.videoContainer) {
+  position: relative;
+  z-index: 1;
+}
+
+/* A hint of the fork's accent on the form panel's edge, tying the two halves
+   of the layout together. */
+.mainContainer .formPanel {
+  background: linear-gradient(180deg, #28313f 0%, #222b38 100%) !important;
+  box-shadow: inset 2px 0 0 rgba(56, 189, 248, 0.35);
+}
